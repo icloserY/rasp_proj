@@ -1,7 +1,7 @@
-#rasp_proj
-==========
-Central Server
----------------	
+# rasp_proj
+
+## Central Server
+
 	function(Service)
 		
 		1.자리관리(사용선택 및 현황 표시)(가능하면 자바 스크립트)
@@ -18,8 +18,8 @@ Central Server
 				-습도 초과 : 제습기 가동
 				-습도 미만 : 가습기 가동
 				-적정 습도(초과->적정, 미만->적정) : 가습기, 제습기 중지
-Local Server(방 기준)
----------------------		
+## Local Server(방 기준)
+
 	function(Service)
 	
 		1.센서 값 감시(데시벨, 온도, 습도)
