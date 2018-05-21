@@ -2,6 +2,7 @@ package local;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import com.pi4j.gpio.extension.base.AdcGpioProvider;
 import com.pi4j.gpio.extension.mcp.MCP3008GpioProvider;
@@ -18,7 +19,7 @@ public class WatchDecibelService implements Runnable {
 	public WatchDecibelService(List<SeatingPlace> seats) {
 		this.seats = seats;
 	}
-	
+	GpioController gpio = null;
 	@Override
 	public void run() {
 		//데시벨 감시
@@ -27,7 +28,7 @@ public class WatchDecibelService implements Runnable {
 		
 		try {
 			// Create gpio controller
-	        final GpioController gpio = GpioFactory.getInstance();
+	        gpio = GpioFactory.getInstance();
 	
 	        // Create custom MCP3008 analog gpio provider
 	        // we must specify which chip select (CS) that that ADC chip is physically connected to.
@@ -76,20 +77,9 @@ public class WatchDecibelService implements Runnable {
 	
 	        // Register the gpio analog input listener for all input pins
 	        gpio.addListener(listener, inputs);
-	
-	        // Keep this sample program running for 10 minutes
-	        for (int count = 0; count < 6; count++) {
-	            try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-	        }
-	
 	        // When your program is finished, make sure to stop all GPIO activity/threads by shutting
 	        // down the GPIO controller (this method will forcefully shutdown all GPIO monitoring threads
 	        // and background scheduled tasks)
-	        gpio.shutdown();
 		} catch (IOException e) {
 			System.out.println("watchService 오류 발생 다시 시작해 주세요.");
 			e.getStackTrace();
