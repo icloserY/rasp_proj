@@ -20,6 +20,7 @@ public class WatchDecibelService implements Runnable {
 		this.seats = seats;
 	}
 	GpioController gpio = null;
+	
 	@Override
 	public void run() {
 		//데시벨 감시
@@ -32,11 +33,11 @@ public class WatchDecibelService implements Runnable {
 	
 	        // Create custom MCP3008 analog gpio provider
 	        // we must specify which chip select (CS) that that ADC chip is physically connected to.
-	        final AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0);
+	        AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0);
 	
 	        // Provision gpio analog input pins for all channels of the MCP3008.
 	        // (you don't have to define them all if you only use a subset in your project)
-	        final GpioPinAnalogInput inputs[] = {
+	        GpioPinAnalogInput inputs[] = {
 	                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0, "MyAnalogInput-CH0")
 	        };
 	
@@ -84,6 +85,6 @@ public class WatchDecibelService implements Runnable {
 			System.out.println("watchService 오류 발생 다시 시작해 주세요.");
 			e.getStackTrace();
 		}
-        System.out.println("Exiting MCP3008GpioExample");
+        //System.out.println("Exiting MCP3008GpioExample");
 	}
 }

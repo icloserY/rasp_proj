@@ -40,6 +40,7 @@ public class LocalServer {
 		//centralServer에서 연결 끊기
 		if(decibelService.gpio != null) 
 			decibelService.gpio.shutdown();
+		System.out.println(decibelService.gpio.isShutdown());
 		executorService.shutdownNow();
 		//if(environmentService.gpio != null) 
 		//	environmentService.gpio.shutdown();
