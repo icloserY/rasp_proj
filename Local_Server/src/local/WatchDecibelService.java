@@ -91,9 +91,9 @@ public class WatchDecibelService implements Runnable {
 	        // and background scheduled tasks)
 	        gpio.shutdown();
 		} catch (IOException e) {
+			System.out.println("watchService 오류 발생 다시 시작해 주세요.");
 			e.getStackTrace();
 		}
-
         System.out.println("Exiting MCP3008GpioExample");
 	}
 }

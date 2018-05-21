@@ -8,8 +8,10 @@ public class StartMain {
 	public static final int PITCHERN0303 = 1;
 	
 	public static void main(String[] args) {
-		boolean flag = true;
 		LocalServer local = LocalServer.getInstance();
+		boolean serverStatus = false;
+		boolean flag = true;
+		
 		System.out.println(local);
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, Charset.forName("UTF-8")));
@@ -20,23 +22,23 @@ public class StartMain {
 			String command = "NOTHING";
 			try {
 				command = reader.readLine();
-				if(!command.equals("NOTHING") && flag) {
-					if(command.equalsIgnoreCase("sta")) {
+				if(!command.equals("NOTHING")) {
+					if(command.equalsIgnoreCase("sta")  && !serverStatus) {
 						local.startLocal();
-						flag = true;
-					}
-					else if(command.equalsIgnoreCase("sto")) {
+						serverStatus = true;
+					} else if(command.equalsIgnoreCase("sto") && serverStatus) {
 						local.stopLocal();
-						flag = false;
-					}
-					else {
+						serverStatus = false;
+					} else if(command.equalsIgnoreCase("sta") && serverStatus) {
+						System.out.println("서버가 이미 동작 중입니다.");
+					} else {
 						System.out.println("잘못된 명령어 입니다.");
 					}
 				}
 				Thread.sleep(100);
 			} catch (Exception e) {
-				e.printStackTrace();
 				System.out.println("오류 발생 다시 시작해 주세요.");
+				e.printStackTrace();
 				flag = false;
 			}
 		}
