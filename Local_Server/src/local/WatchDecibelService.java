@@ -46,7 +46,7 @@ public class WatchDecibelService implements Runnable {
 	        // a 'GpioPinAnalogValueChangeEvent' is raised.  This is used to prevent unnecessary
 	        // event dispatching for an analog input that may have an acceptable or expected
 	        // range of value drift.
-	        provider.setEventThreshold(AdcGpioProvider.DEFAULT_THRESHOLD, inputs); // all inputs; alternatively you can set thresholds on each input discretely
+	        provider.setEventThreshold(2, inputs); // all inputs; alternatively you can set thresholds on each input discretely
 	
 	        // Set the background monitoring interval timer for the underlying framework to
 	        // interrogate the ADC chip for input conversion values.  The acceptable monitoring
@@ -55,7 +55,7 @@ public class WatchDecibelService implements Runnable {
 	        // on a regular basis.  The higher this value the slower your application will get
 	        // analog input value change events/notifications.  Try to find a reasonable balance
 	        // for your project needs.
-	        provider.setMonitorInterval(500); // milliseconds
+	        provider.setMonitorInterval(150); // milliseconds
 	
 	        // Print current analog input conversion values from each input channel
 	        for(GpioPinAnalogInput input : inputs){
