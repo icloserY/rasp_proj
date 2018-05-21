@@ -78,7 +78,7 @@ public class WatchDecibelService implements Runnable {
 	        gpio.addListener(listener, inputs);
 	
 	        // Keep this sample program running for 10 minutes
-	        for (int count = 0; count < 600; count++) {
+	        for (int count = 0; count < 6; count++) {
 	            try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {

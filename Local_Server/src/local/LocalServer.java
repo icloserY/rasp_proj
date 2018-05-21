@@ -35,7 +35,7 @@ public class LocalServer {
 	}
 	public void stopLocal() {
 		//centralServer에서 연결 끊기
-		executorService.shutdown();
+		executorService.shutdownNow();
 		System.out.println("local 종료");
 	}
 	
