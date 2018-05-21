@@ -14,8 +14,6 @@ public class LocalServer {
 	//좌석
 	private List<SeatingPlace> seats = new ArrayList<>();
 	private LocalServer() {
-		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-		
 		seats.add(new SeatingPlace(1));
 		seats.add(new SeatingPlace(2));
 	}
@@ -28,7 +26,7 @@ public class LocalServer {
 	public void startLocal() {
 		System.out.println("local 시작");
 		//centralServer에 소켓 연결
-		
+		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		//executorService -> watchService 등록
 		executorService.submit(new WatchDecibelService(seats));
 		executorService.submit(new WatchEnvironmentService(env));
