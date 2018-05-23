@@ -28,6 +28,7 @@ public class StartMain {
 						serverStatus = true;
 					} else if(command.equalsIgnoreCase("sto") && serverStatus && local != null) {
 						local.stopLocal();
+						local = null;
 						serverStatus = false;
 					} else if(command.equalsIgnoreCase("sta") && serverStatus && local != null) {
 						System.out.println("서버가 이미 동작 중입니다.");
