@@ -17,7 +17,7 @@ public class LocalServer {
 	private Environment env = new Environment();
 	
 	//watchService, envService
-	private WatchDecibelService decibelService;
+	private WatchDecibelServiceByListener decibelService;
 	private WatchEnvironmentService environmentService;
 	
 	private LocalServer() {
@@ -34,7 +34,7 @@ public class LocalServer {
 		//centralServer에 소켓 연결
 		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		//executorService -> watchService 등록
-		executorService.submit(decibelService = new WatchDecibelService(seats));
+		executorService.submit(decibelService = new WatchDecibelServiceByListener(seats));
 		executorService.submit(environmentService = new WatchEnvironmentService(env));
 	}
 	
