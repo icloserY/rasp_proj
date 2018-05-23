@@ -36,7 +36,7 @@ public class WatchDecibelService implements Runnable {
 	                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0, "MyAnalogInput-CH0")
 	        };
 	        
-	        provider.setEventThreshold(4, inputs);
+	        provider.setEventThreshold(10, inputs);
 	        provider.setMonitorInterval(250);
 	        
 	        for(GpioPinAnalogInput input : inputs){
