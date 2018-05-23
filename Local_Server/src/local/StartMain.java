@@ -8,8 +8,8 @@ public class StartMain {
 	public static final int PITCHERN0303 = 1;
 	
 	public static void main(String[] args) {
-		//LocalServer local = LocalServer.getInstance();
-		LocalServerVer2 local = null;
+		LocalServer local = LocalServer.getInstance();
+		//LocalServerVer2 local = null;
 		boolean serverStatus = false;
 		boolean flag = true;
 		
@@ -22,15 +22,13 @@ public class StartMain {
 			try {
 				command = reader.readLine();
 				if(!command.equals("NOTHING")) {
-					if(command.equalsIgnoreCase("sta")  && !serverStatus && local == null) {
-						local = new LocalServerVer2();
+					if(command.equalsIgnoreCase("sta")  && !serverStatus) {
 						local.startLocal();
 						serverStatus = true;
-					} else if(command.equalsIgnoreCase("sto") && serverStatus && local != null) {
+					} else if(command.equalsIgnoreCase("sto") && serverStatus) {
 						local.stopLocal();
-						local = null;
 						serverStatus = false;
-					} else if(command.equalsIgnoreCase("sta") && serverStatus && local != null) {
+					} else if(command.equalsIgnoreCase("sta") && serverStatus) {
 						System.out.println("서버가 이미 동작 중입니다.");
 					} else {
 						System.out.println("잘못된 명령어 입니다.");
