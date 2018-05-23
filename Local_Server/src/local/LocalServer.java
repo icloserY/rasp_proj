@@ -40,10 +40,6 @@ public class LocalServer {
 	
 	public void stopLocal() {
 		//centralServer에서 연결 끊기
-		if(decibelService.gpio != null) {
-			decibelService.gpio.shutdown();
-			decibelService.gpio.removeAllListeners();
-		}
 		executorService.shutdownNow();
 		
 		System.out.println("local 종료");
