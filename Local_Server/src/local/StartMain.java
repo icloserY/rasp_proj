@@ -12,8 +12,6 @@ public class StartMain {
 		boolean serverStatus = false;
 		boolean flag = true;
 		
-		System.out.println(local);
-		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, Charset.forName("UTF-8")));
 		
 		while(flag) {
