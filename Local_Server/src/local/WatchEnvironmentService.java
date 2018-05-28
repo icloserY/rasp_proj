@@ -15,8 +15,7 @@ public class WatchEnvironmentService implements Runnable {
             System.out.println(" ==>> GPIO SETUP FAILED");
             return;
         }
- 
-       GpioUtil.export(3, GpioUtil.DIRECTION_OUT);  
+       GpioUtil.export(3, GpioUtil.DIRECTION_OUT);
 	}
  
     public void getTemperature() {
@@ -52,7 +51,7 @@ public class WatchEnvironmentService implements Runnable {
           if ((i >= 4) && (i % 2 == 0)) {
              /* shove each bit into the storage bytes */
              dht11_dat[j / 8] <<= 1;
-             if (counter > 16) {
+             if (counter > 30) {
                  dht11_dat[j / 8] |= 1;
              }
              j++;
@@ -92,11 +91,9 @@ public class WatchEnvironmentService implements Runnable {
 		//온도, 습도 감시
 		System.out.println("온도, 습도 감지 시작");
 		try {
-			WatchEnvironmentService dht = new WatchEnvironmentService(env);
-			 
 			for (int i=0; i<10; i++) {
 			    Thread.sleep(2000);
-			    dht.getTemperature();
+			    getTemperature();
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
