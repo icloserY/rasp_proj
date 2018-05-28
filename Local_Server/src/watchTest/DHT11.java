@@ -59,6 +59,8 @@ public class DHT11 {
         }
         // check we read 40 bits (8bit x 5 ) + verify checksum in the last
         // byte
+       System.out.println("j = " + j);
+       System.out.println("checkParity = " + checkParity());
         if ((j >= 40) && checkParity()) {
             float h = (float)((dht11_dat[0] << 8) + dht11_dat[1]) / 10;
             if ( h > 100 )
