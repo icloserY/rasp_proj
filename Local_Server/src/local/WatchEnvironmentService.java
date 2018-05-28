@@ -51,7 +51,7 @@ public class WatchEnvironmentService implements Runnable {
           if ((i >= 4) && (i % 2 == 0)) {
              /* shove each bit into the storage bytes */
              dht11_dat[j / 8] <<= 1;
-             if (counter > 30) {
+             if (counter > 16) {
                  dht11_dat[j / 8] |= 1;
              }
              j++;
