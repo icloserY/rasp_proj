@@ -28,14 +28,14 @@ public class DHT11 {
        Gpio.digitalWrite(3, Gpio.LOW);
        Gpio.delay(18);
  
-       Gpio.digitalWrite(3, Gpio.HIGH);       
+       //Gpio.digitalWrite(3, Gpio.HIGH);       
        Gpio.pinMode(3, Gpio.INPUT);
  
        for (int i = 0; i < MAXTIMINGS; i++) {
           int counter = 0;
           while (Gpio.digitalRead(3) == laststate) {
               counter++;
-              Gpio.delayMicroseconds(1);
+              Gpio.delayMicroseconds(2);
               if (counter == 255) {
                   break;
               }
