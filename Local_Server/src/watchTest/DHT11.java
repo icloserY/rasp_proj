@@ -9,7 +9,7 @@ public class DHT11 {
 	static int humidity=0;
 	static int temperature=0;
 	static String rootPath = System.getProperty("user.dir");
-	static String filePath = rootPath + "/src/watchTest/" + "dht.py";
+	static String filePath = rootPath + "/src/watchTest/" + "Test.py";
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		Runtime rt= Runtime.getRuntime();
