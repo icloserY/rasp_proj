@@ -25,7 +25,6 @@ public class DHT11 {
 			
 			if(!(line.contains("ERR_CRC") || line.contains("ERR_FTR"))){
 				data=line.split(", ");
-			    System.out.println(data[0]);
 				temperature=Float.parseFloat(data[0]);
 				humidity=Float.parseFloat(data[1]);
 			}
