@@ -36,7 +36,7 @@ public class WatchEnvironmentService implements Runnable {
 				//System.out.println(filePath);
 				System.out.println("outter if");
 				if((line = bri.readLine()) != null) {
-					System.out.println("inner if");
+					//System.out.println("inner if");
 					//System.out.println(line);
 					
 					if(!(line.contains("ERR_CRC") && !line.contains("ERR_FTR"))){
@@ -44,7 +44,6 @@ public class WatchEnvironmentService implements Runnable {
 						temperature=Float.parseFloat(data[0]);
 						humidity=Float.parseFloat(data[1]);
 						
-						/*
 						if (temperature >= env.PROPER_TEMPERATURE + 3) {
 							env.setTemperature(temperature);
 							env._temper_is_high_flag = true;
@@ -58,8 +57,6 @@ public class WatchEnvironmentService implements Runnable {
 						} else if (humidity <= env.PROPER_HUMIDITY - 5) {
 							env.setHumidity(humidity);
 						}
-						*/
-						System.out.println("inner if2");
 						
 						System.out.println("Temperature is : "+temperature+" 'C Humidity is :"+ humidity+" %RH");
 					}
