@@ -22,7 +22,7 @@ public class DHT11 {
 		if((line = bri.readLine()) != null) {
 			System.out.println("inner if");
 			System.out.println(line);
-			/*
+			
 			if(!(line.contains("ERR_CRC") || line.contains("ERR_FTR"))){
 				data=line.split("ABC");
 			    System.out.println(data[0]);
@@ -32,7 +32,7 @@ public class DHT11 {
 			else { 
 				System.out.println("Data Error");
 			}
-			*/
+			
 		}
 		bri.close();
 		p.waitFor();
