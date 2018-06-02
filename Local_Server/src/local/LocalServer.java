@@ -36,6 +36,8 @@ public class LocalServer {
 		//executorService -> watchService 등록
 		executorService.submit(decibelService = new WatchDecibelServiceByListener(seats));
 		executorService.submit(environmentService = new WatchEnvironmentService(env));
+		
+		
 	}
 	
 	public void stopLocal() {

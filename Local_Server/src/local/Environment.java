@@ -1,19 +1,25 @@
 package local;
 
 public class Environment {
-	private long _temperature = 0L;
-	private long _humidity = 0L;
+	private float _temperature = 0;
+	private float _humidity = 0;
 	
-	public long getTemperature() {
+	static final float PROPER_TEMPERATURE = 23;
+	static final float PROPER_HUMIDITY = 50;
+	
+	public boolean _temper_is_high_flag = false;
+	public boolean _hum_is_high_flag = false;
+	
+	public float getTemperature() {
 		return _temperature;
 	}
-	public void setTemperature(long temperature) {
+	public void setTemperature(float temperature) {
 		this._temperature = temperature;
 	}
-	public long getHumidity() {
+	public float getHumidity() {
 		return _humidity;
 	}
-	public void setHumidity(long humidity) {
+	public void setHumidity(float humidity) {
 		this._humidity = humidity;
 	}
 	
