@@ -9,7 +9,7 @@ public class DHT11 {
 	static int humidity=0;
 	static int temperature=0;
 	static String rootPath = System.getProperty("user.dir");
-	static String filePath = rootPath + "/src/watchTest/" + "Test.py";
+	static String filePath = rootPath + "/" + "dht.py";
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		Runtime rt= Runtime.getRuntime();
@@ -17,6 +17,7 @@ public class DHT11 {
 		Process p=rt.exec(cmd);
 		
 		BufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		System.out.println(filePath);
 		System.out.println("outter if");
 		if((line = bri.readLine()) != null) {
 			System.out.println("inner if");
