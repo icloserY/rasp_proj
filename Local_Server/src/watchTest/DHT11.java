@@ -6,8 +6,8 @@ import java.io.InputStreamReader;
 public class DHT11 {
 	private static String line;
 	private static String[] data;
-	static int humidity=0;
-	static int temperature=0;
+	static float humidity=0f;
+	static float temperature=0f;
 	static String rootPath = System.getProperty("user.dir");
 	static String filePath = rootPath + "/" + "dht.py";
 	public static void main(String[] args) throws Exception {
@@ -24,10 +24,10 @@ public class DHT11 {
 			System.out.println(line);
 			
 			if(!(line.contains("ERR_CRC") || line.contains("ERR_FTR"))){
-				data=line.split("ABC");
+				data=line.split(", ");
 			    System.out.println(data[0]);
-				temperature=Integer.parseInt(data[0]);
-				humidity=Integer.parseInt(data[1]);
+				temperature=Float.parseFloat(data[0]);
+				humidity=Float.parseFloat(data[1]);
 			}
 			else { 
 				System.out.println("Data Error");
