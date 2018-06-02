@@ -34,9 +34,9 @@ public class WatchEnvironmentService implements Runnable {
 				
 				BufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream()));
 				//System.out.println(filePath);
-				//System.out.println("outter if");
+				System.out.println("outter if");
 				if((line = bri.readLine()) != null) {
-					//System.out.println("inner if");
+					System.out.println("inner if");
 					//System.out.println(line);
 					
 					if(!(line.contains("ERR_CRC") && !line.contains("ERR_FTR"))){
@@ -59,6 +59,7 @@ public class WatchEnvironmentService implements Runnable {
 							env.setHumidity(humidity);
 						}
 						///////////////////////////////////////////////
+						System.out.println("inner if2");
 						
 						System.out.println("Temperature is : "+temperature+" 'C Humidity is :"+ humidity+" %RH");
 					}
