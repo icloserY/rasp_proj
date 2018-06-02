@@ -8,11 +8,14 @@ public class DHT11 {
 	private static String[] data;
 	static int humidity=0;
 	static int temperature=0;
-	
+	static String rootPath = System.getProperty("user.dir");
+	static String filePath = rootPath + "/src/watchTest/" + "dht.py";
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		Runtime rt= Runtime.getRuntime();
-		Process p=rt.exec("python ./dht.py");
+		String[] cmd = {"python", filePath};
+		Process p=rt.exec(cmd);
+		
 		BufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		System.out.println("outter if");
 		if((line = bri.readLine()) != null) {
@@ -31,7 +34,8 @@ public class DHT11 {
 			*/
 		}
 		bri.close();
-      	p.waitFor();
+		p.waitFor();
+		
       	System.out.println("Temperature is : "+temperature+" 'C Humidity is :"+ humidity+" %RH");
       	System.out.println("Done.");
 	}
