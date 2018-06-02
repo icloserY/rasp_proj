@@ -14,9 +14,9 @@ public class DHT11 {
 		Runtime rt= Runtime.getRuntime();
 		Process p=rt.exec("python ./dht.py");
 		BufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		System.out.print("outter if");
+		System.out.println("outter if");
 		if((line = bri.readLine()) != null) {
-			System.out.print("inner if");
+			System.out.println("inner if");
 			System.out.println(line);
 			/*
 			if(!(line.contains("ERR_CRC") || line.contains("ERR_FTR"))){
