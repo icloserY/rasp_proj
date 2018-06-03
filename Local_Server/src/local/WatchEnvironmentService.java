@@ -74,7 +74,7 @@ public class WatchEnvironmentService implements Runnable {
 									&& (env.humStatus == Status.OVER_HUMIDITY || env.humStatus == Status.LOW_HUMIDITY)) {
 							//통지 (가습기 또는 제습기 중지)
 							System.out.println("가습기 중지, 제습기 중지");
-							env.humStatus = Status.OVER_HUMIDITY;
+							env.humStatus = Status.PROPER_HUMIDITY;
 						}
 						
 						System.out.println("Temperature is : "+env.getTemperature()+ 
