@@ -31,7 +31,7 @@ public class WatchDecibelServiceByListener implements Runnable {
 			gpio = GpioFactory.getInstance();
 			
 	        final AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0);
-	
+	        
 	        final GpioPinAnalogInput inputs[] = {
 	                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0, seats.get(0).getGpioPinNumber())
 	        };
