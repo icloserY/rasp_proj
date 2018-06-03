@@ -21,8 +21,8 @@ public class LocalServer {
 	private WatchEnvironmentService environmentService;
 	
 	private LocalServer() {
-		seats.add(new SeatingPlace(1));
-		seats.add(new SeatingPlace(2));
+		seats.add(new SeatingPlace("1"));
+		seats.add(new SeatingPlace("2"));
 	} 
 	
 	public static LocalServer getInstance() {
@@ -32,11 +32,13 @@ public class LocalServer {
 	public void startLocal() {
 		System.out.println("local 시작");
 		//centralServer에 소켓 연결
+		
 		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		//executorService -> watchService 등록
 		executorService.submit(decibelService = new WatchDecibelServiceByListener(seats));
-		executorService.submit(environmentService = new WatchEnvironmentService(env));
+		executorService.submit(environmentService = new WatchEnvironmentService(env, serverSocketChannel));
 		
+		//fx창 띄우기
 		
 	}
 	

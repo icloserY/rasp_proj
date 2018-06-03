@@ -1,14 +1,20 @@
 package local;
 
 public class Environment {
-	private float _temperature = 0;
-	private float _humidity = 0;
+	public enum Status {
+		OVER_TEMPERATURE, OVER_HUMIDITY, 
+		LOW_TEMPERATURE, LOW_HUMIDITY, 
+		PROPER_TEMPERATURE, PROPER_HUMIDITY;
+	}
+	
+	public Status tempStatus = Status.PROPER_TEMPERATURE;
+	public Status humStatus = Status.PROPER_HUMIDITY;
+	
+	private float _temperature = 0f;
+	private float _humidity = 0f;
 	
 	static final float PROPER_TEMPERATURE = 23;
 	static final float PROPER_HUMIDITY = 50;
-	
-	public boolean _temper_is_high_flag = false;
-	public boolean _hum_is_high_flag = false;
 	
 	public float getTemperature() {
 		return _temperature;
@@ -22,6 +28,5 @@ public class Environment {
 	public void setHumidity(float humidity) {
 		this._humidity = humidity;
 	}
-	
 	
 }

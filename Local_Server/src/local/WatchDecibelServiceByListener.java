@@ -15,6 +15,7 @@ import com.pi4j.io.spi.SpiChannel;
 
 public class WatchDecibelServiceByListener implements Runnable {
 	List<SeatingPlace> seats;
+	
 	public WatchDecibelServiceByListener(List<SeatingPlace> seats) {
 		this.seats = seats;
 	}
@@ -25,13 +26,14 @@ public class WatchDecibelServiceByListener implements Runnable {
 		//데시벨 감시
 		System.out.println("데시벨 감지 시작");
 		System.out.println("<--Pi4J--> MCP3008 ADC Example ... started.");
+		boolean flag = true;
 		try {
 			gpio = GpioFactory.getInstance();
 			
 	        final AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0);
 	
 	        final GpioPinAnalogInput inputs[] = {
-	                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0, "MyAnalogInput-CH0")
+	                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0, seats.get(0).getGpioPinNumber())
 	        };
 	        
 	        provider.setEventThreshold(5, inputs);
@@ -47,14 +49,36 @@ public class WatchDecibelServiceByListener implements Runnable {
 	            public void handleGpioPinAnalogValueChangeEvent(GpioPinAnalogValueChangeEvent event)
 	            {
 	                double value = event.getValue();
+	                int seatNum = Integer.parseInt(event.getPin().getName()) - 1;
 	                if(value > 50) {
-	                	System.out.println("<CHANGED VALUE> [" + event.getPin().getName() + "] : RAW VALUE = " + value);
+	                	seats.get(seatNum).setNoisy(true);
+	                	System.out.println("<CHANGED VALUE> [" + event.getPin().getName() + "번 자리" + "] : RAW VALUE = " + value);
 	                }
 	            }
 	        };
 	        
 	        gpio.addListener(listener, inputs);
+	        
+	      //경고 생성
+			while(flag) {
+				try {
+					for(SeatingPlace seat : seats) {
+						if(seat.isNoisy()) {
+							//경고 띄우기(fx)
+							System.out.println(seat.getGpioPinNumber() + "번 자리 조용히 하세요");
+							//noisy to false
+							seat.setNoisy(false);
+						}
+					}
+					
+					
+					Thread.sleep(1000);
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
 		} catch (IOException e) {
+			flag = false;
 			System.out.println("watchService 오류 발생 다시 시작해 주세요.");
 			e.getStackTrace();
 		}

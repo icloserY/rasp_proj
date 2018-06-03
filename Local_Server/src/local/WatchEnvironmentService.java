@@ -1,22 +1,25 @@
 package local;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.channels.ServerSocketChannel;
 
-import com.pi4j.wiringpi.Gpio;
-import com.pi4j.wiringpi.GpioUtil;
+import local.Environment.Status;
+
 
 public class WatchEnvironmentService implements Runnable {
 	private Environment env;
+	private ServerSocketChannel serverSocketChannel;
 	
 	private static String line;
 	private static String[] data;
-	static float humidity=0f;
-	static float temperature=0f;
 	static String rootPath = System.getProperty("user.dir");
 	static String filePath = rootPath + "/" + "dht.py";
+	float temperature = 0.0f;
+	float humidity = 0.0f;
 	
-    public WatchEnvironmentService(Environment env) {
+    public WatchEnvironmentService(Environment env, ServerSocketChannel serverSocketChannel) {
 		this.env = env;
+		this.serverSocketChannel = serverSocketChannel;
 	}
 	@Override
 	public void run() {
@@ -28,37 +31,54 @@ public class WatchEnvironmentService implements Runnable {
 			Runtime rt= Runtime.getRuntime();
 			String[] cmd = {"python", filePath};
 			
-			
 			while(flag) {
 				Process p=rt.exec(cmd);
 				
 				BufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream()));
-				//System.out.println(filePath);
-				System.out.println("outter if");
 				if((line = bri.readLine()) != null) {
-					//System.out.println("inner if");
-					//System.out.println(line);
-					
 					if(!(line.contains("ERR_CRC") && !line.contains("ERR_FTR"))){
 						data=line.split(", ");
-						temperature=Float.parseFloat(data[0]);
-						humidity=Float.parseFloat(data[1]);
+						env.setTemperature(temperature = Float.parseFloat(data[0]));
+						env.setHumidity(humidity = Float.parseFloat(data[1]));
 						
-						if (temperature >= env.PROPER_TEMPERATURE + 3) {
-							env.setTemperature(temperature);
-							env._temper_is_high_flag = true;
-						} else if (temperature <= env.PROPER_TEMPERATURE - 3) {
-							env.setTemperature(temperature);
+						//온도 감시
+						if (temperature >= Environment.PROPER_TEMPERATURE + 3 && env.tempStatus == Status.PROPER_TEMPERATURE) {
+							env.tempStatus = Status.OVER_TEMPERATURE;
+								
+							//통지 (에어컨 가동)
+							System.out.println("에어콘 가동");
+						}else if (temperature <= Environment.PROPER_TEMPERATURE - 3 && env.tempStatus == Status.PROPER_TEMPERATURE) {
+							env.tempStatus = Status.LOW_TEMPERATURE;
+								
+							//통지 (히터 가동)
+							System.out.println("히터 가동");
+						}else if (temperature <= Environment.PROPER_TEMPERATURE + 1.5f && temperature > Environment.PROPER_TEMPERATURE - 1.5f
+									&& (env.tempStatus == Status.OVER_TEMPERATURE || env.tempStatus == Status.LOW_TEMPERATURE)) {
+							//통지 (에어컨 중지 또는 히터 중지)
+							System.out.println("에어콘 중지, 히터 중지");
+							env.tempStatus = Status.PROPER_TEMPERATURE;
 						}
 						
-						if (humidity >= env.PROPER_HUMIDITY + 5) {
-							env.setTemperature(humidity);
-							env._hum_is_high_flag = true;
-						} else if (humidity <= env.PROPER_HUMIDITY - 5) {
-							env.setHumidity(humidity);
+						//습도 감시
+						if (humidity >= Environment.PROPER_HUMIDITY + 10 && env.humStatus == Status.PROPER_HUMIDITY) {
+							env.humStatus = Status.OVER_HUMIDITY;
+								
+							//통지 (제습기 가동)
+							System.out.println("제습기 가동");
+						}else if (humidity <= Environment.PROPER_HUMIDITY - 10 && env.humStatus == Status.PROPER_HUMIDITY) {
+							env.humStatus = Status.LOW_HUMIDITY;
+								
+							//통지 (가습기 가동)
+							System.out.println("가습기 가동");
+						}else if (humidity <= Environment.PROPER_HUMIDITY + 5 && humidity > Environment.PROPER_HUMIDITY - 5
+									&& (env.humStatus == Status.OVER_HUMIDITY || env.humStatus == Status.LOW_HUMIDITY)) {
+							//통지 (가습기 또는 제습기 중지)
+							System.out.println("가습기 중지, 제습기 중지");
+							env.humStatus = Status.OVER_HUMIDITY;
 						}
 						
-						System.out.println("Temperature is : "+temperature+" 'C Humidity is :"+ humidity+" %RH");
+						System.out.println("Temperature is : "+env.getTemperature()+ 
+											" 'C Humidity is :"+ env.getHumidity()+" %RH");
 					}
 					else { 
 						System.out.println("Data Error");
