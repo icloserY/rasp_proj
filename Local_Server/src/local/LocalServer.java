@@ -10,7 +10,7 @@ public class LocalServer {
 	private static final LocalServer local = new LocalServer();
 	//서버 소켓 채널
 	private ServerSocketChannel serverSocketChannel;
-	private ExecutorService executorService;
+	public static ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());;
 	//좌석
 	private List<SeatingPlace> seats = new ArrayList<>();
 	//온도, 습도 -> 환경
@@ -28,18 +28,12 @@ public class LocalServer {
 	public static LocalServer getInstance() {
 		return local;
 	}
-	
+
 	public void startLocal() {
 		System.out.println("local 시작");
-		//centralServer에 소켓 연결
-		
-		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		//executorService -> watchService 등록
 		executorService.submit(decibelService = new WatchDecibelServiceByListener(seats));
 		executorService.submit(environmentService = new WatchEnvironmentService(env, serverSocketChannel));
-		
-		//fx창 띄우기
-		
 	}
 	
 	public void stopLocal() {
@@ -51,5 +45,4 @@ public class LocalServer {
 		
 		System.out.println("local 종료");
 	}
-	
 }
