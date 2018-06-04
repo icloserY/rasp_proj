@@ -1,6 +1,7 @@
 package local;
 
-import java.nio.channels.ServerSocketChannel;
+import java.net.InetSocketAddress;
+import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -9,7 +10,7 @@ import java.util.concurrent.Executors;
 public class LocalServer {
 	private static final LocalServer local = new LocalServer();
 	//서버 소켓 채널
-	private ServerSocketChannel serverSocketChannel;
+	private SocketChannel localSocketChannel;
 	public static ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());;
 	//좌석
 	private List<SeatingPlace> seats = new ArrayList<>();
@@ -32,17 +33,34 @@ public class LocalServer {
 	public void startLocal() {
 		System.out.println("local 시작");
 		//executorService -> watchService 등록
+		try {
+			localSocketChannel = SocketChannel.open();
+			localSocketChannel.configureBlocking(true);
+			localSocketChannel.bind(new InetSocketAddress("220.66.115.136", 5001));
+			
+			System.out.println("[연결수락 : " + localSocketChannel.getRemoteAddress() + "]");
+		}catch(Exception e) {
+			if(localSocketChannel.isOpen()) {stopLocal();}
+			return;
+		}
 		executorService.submit(decibelService = new WatchDecibelServiceByListener(seats));
-		executorService.submit(environmentService = new WatchEnvironmentService(env, serverSocketChannel));
+		executorService.submit(environmentService = new WatchEnvironmentService(env, localSocketChannel, executorService));
+		
 	}
 	
 	public void stopLocal() {
 		//centralServer에서 연결 끊기
-		if(decibelService.gpio != null) {
-			decibelService.gpio.removeAllListeners();
+		try {
+			if(decibelService.gpio != null) {
+				decibelService.gpio.removeAllListeners();
+			}
+			executorService.shutdownNow();
+			if(localSocketChannel != null && localSocketChannel.isOpen()) {
+				localSocketChannel.close();
+			}
+			System.out.println("local 종료");
+		} catch(Exception e) {
+			System.out.println("올바르게 종료하지 못했습니다.");
 		}
-		executorService.shutdownNow();
-		
-		System.out.println("local 종료");
 	}
 }

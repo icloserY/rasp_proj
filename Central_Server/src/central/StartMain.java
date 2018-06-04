@@ -8,8 +8,7 @@ public class StartMain {
 	public static final int PITCHERN0303 = 1;
 	
 	public static void main(String[] args) {
-		CentralServer local = CentralServer.getInstance();
-		//LocalServerVer2 local = null;
+		CentralServer central = CentralServer.getInstance();
 		boolean serverStatus = false;
 		boolean flag = true;
 		
@@ -17,22 +16,24 @@ public class StartMain {
 		
 		while(flag) {
 			System.out.println("명령을 입력하세요.");
-			System.out.println("1.start(sta), 2.stop(sto)");
+			System.out.println("1.start(sta), 2.stop(sto), 3.showConnection(shw)");
 			String command = "NOTHING";
 			try {
 				command = reader.readLine();
 				if(!command.equals("NOTHING")) {
 					if(command.equalsIgnoreCase("sta")  && !serverStatus) {
-						local.startLocal();
+						central.startCentral();
 						serverStatus = true;
 					} else if(command.equalsIgnoreCase("sto") && serverStatus) {
-						local.stopLocal();
+						central.stopCentral();
 						serverStatus = false;
 					} else if(command.equalsIgnoreCase("sta") && serverStatus) {
 						System.out.println("서버가 이미 동작 중입니다.");
+					} else if(command.equalsIgnoreCase("sto") && serverStatus) {
+						central.showConnection();
 					} else {
 						System.out.println("잘못된 명령어 입니다.");
-					}
+					} 
 				}
 				Thread.sleep(100);
 			} catch (Exception e) {

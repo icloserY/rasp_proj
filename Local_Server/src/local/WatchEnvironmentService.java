@@ -1,14 +1,18 @@
 package local;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.nio.channels.ServerSocketChannel;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
+import java.util.concurrent.ExecutorService;
 
 import local.Environment.Status;
 
 
 public class WatchEnvironmentService implements Runnable {
 	private Environment env;
-	private ServerSocketChannel serverSocketChannel;
+	private SocketChannel localSocketChannel;
+	private ExecutorService executorService;
 	
 	private static String line;
 	private static String[] data;
@@ -17,9 +21,11 @@ public class WatchEnvironmentService implements Runnable {
 	float temperature = 0.0f;
 	float humidity = 0.0f;
 	
-    public WatchEnvironmentService(Environment env, ServerSocketChannel serverSocketChannel) {
+    public WatchEnvironmentService(Environment env, SocketChannel localSocketChannel,
+    								ExecutorService executorService) {
 		this.env = env;
-		this.serverSocketChannel = serverSocketChannel;
+		this.localSocketChannel = localSocketChannel;
+		this.executorService = executorService;
 	}
 	@Override
 	public void run() {
@@ -44,18 +50,21 @@ public class WatchEnvironmentService implements Runnable {
 						//온도 감시
 						if (temperature >= Environment.PROPER_TEMPERATURE + 3 && env.tempStatus == Status.PROPER_TEMPERATURE) {
 							env.tempStatus = Status.OVER_TEMPERATURE;
-								
+							
 							//통지 (에어컨 가동)
 							System.out.println("에어콘 가동");
+							send(env.tempStatus.name());
 						}else if (temperature <= Environment.PROPER_TEMPERATURE - 3 && env.tempStatus == Status.PROPER_TEMPERATURE) {
 							env.tempStatus = Status.LOW_TEMPERATURE;
 								
 							//통지 (히터 가동)
 							System.out.println("히터 가동");
+							send(env.tempStatus.name());
 						}else if (temperature <= Environment.PROPER_TEMPERATURE + 1.5f && temperature > Environment.PROPER_TEMPERATURE - 1.5f
 									&& (env.tempStatus == Status.OVER_TEMPERATURE || env.tempStatus == Status.LOW_TEMPERATURE)) {
 							//통지 (에어컨 중지 또는 히터 중지)
 							System.out.println("에어콘 중지, 히터 중지");
+							send(env.tempStatus.name());
 							env.tempStatus = Status.PROPER_TEMPERATURE;
 						}
 						
@@ -65,15 +74,18 @@ public class WatchEnvironmentService implements Runnable {
 								
 							//통지 (제습기 가동)
 							System.out.println("제습기 가동");
+							send(env.humStatus.name());
 						}else if (humidity <= Environment.PROPER_HUMIDITY - 10 && env.humStatus == Status.PROPER_HUMIDITY) {
 							env.humStatus = Status.LOW_HUMIDITY;
 								
 							//통지 (가습기 가동)
 							System.out.println("가습기 가동");
+							send(env.humStatus.name());
 						}else if (humidity <= Environment.PROPER_HUMIDITY + 5 && humidity > Environment.PROPER_HUMIDITY - 5
 									&& (env.humStatus == Status.OVER_HUMIDITY || env.humStatus == Status.LOW_HUMIDITY)) {
 							//통지 (가습기 또는 제습기 중지)
 							System.out.println("가습기 중지, 제습기 중지");
+							send(env.humStatus.name());
 							env.humStatus = Status.PROPER_HUMIDITY;
 						}
 						
@@ -92,5 +104,18 @@ public class WatchEnvironmentService implements Runnable {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public void send(String data) {
+		executorService.submit(()->{
+			try {
+				Charset charset = Charset.forName("UTF-8");
+				ByteBuffer byteBuffer = charset.encode(data);
+				localSocketChannel.write(byteBuffer);
+			}catch(Exception e) {
+				System.out.println("서버 통신 불가");
+			}
+		});
 	}
 }
