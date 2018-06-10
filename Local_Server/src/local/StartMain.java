@@ -25,7 +25,8 @@ public class StartMain extends Application{
 				System.out.println("1.start(sta), 2.stop(sto)");
 				String command = "NOTHING";
 				try {
-					command = reader.readLine();
+					//command = reader.readLine();
+					command = "sta";
 					if(!command.equals("NOTHING")) {
 						if(command.equalsIgnoreCase("sta")  && !serverStatus) {
 							local.startLocal();
