@@ -65,8 +65,8 @@ public class WatchEnvironmentService implements Runnable {
 									&& (env.tempStatus == Status.OVER_TEMPERATURE || env.tempStatus == Status.LOW_TEMPERATURE)) {
 							//통지 (에어컨 중지 또는 히터 중지)
 							System.out.println("에어콘 중지, 히터 중지");
-							send(env.tempStatus.name());
 							env.tempStatus = Status.PROPER_TEMPERATURE;
+							send(env.tempStatus.name());
 						}
 						
 						//습도 감시
@@ -86,8 +86,8 @@ public class WatchEnvironmentService implements Runnable {
 									&& (env.humStatus == Status.OVER_HUMIDITY || env.humStatus == Status.LOW_HUMIDITY)) {
 							//통지 (가습기 또는 제습기 중지)
 							System.out.println("가습기 중지, 제습기 중지");
-							send(env.humStatus.name());
 							env.humStatus = Status.PROPER_HUMIDITY;
+							send(env.humStatus.name());
 						}
 						
 						System.out.println("Temperature is : "+env.getTemperature()+ 
@@ -100,7 +100,7 @@ public class WatchEnvironmentService implements Runnable {
 				}
 				bri.close();
 				p.waitFor();
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
