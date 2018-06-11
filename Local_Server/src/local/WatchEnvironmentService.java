@@ -37,13 +37,12 @@ public class WatchEnvironmentService implements Runnable {
 			Runtime rt= Runtime.getRuntime();
 			String[] cmd = {"python", filePath};
 			
-			System.out.println("before while");
 			while(flag) {
 				Process p=rt.exec(cmd);
 				
 				BufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream()));
 				if((line = bri.readLine()) != null) {
-					if(!(line.contains("ERR_CRC") && !line.contains("ERR_FTR"))){
+					if(!line.contains("ERR_CRC") && !line.contains("ERR_FTR")){
 						data=line.split(", ");
 						System.out.println(line);
 						env.setTemperature(temperature = Float.parseFloat(data[0]));
@@ -98,10 +97,10 @@ public class WatchEnvironmentService implements Runnable {
 						System.out.println("Data Error");
 						flag = false;
 					}
-					System.out.println(temperature + " " + humidity);
 				}
 				bri.close();
 				p.waitFor();
+				Thread.sleep(1000);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
