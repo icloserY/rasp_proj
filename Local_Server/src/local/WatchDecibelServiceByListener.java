@@ -13,7 +13,12 @@ import com.pi4j.io.gpio.event.GpioPinAnalogValueChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerAnalog;
 import com.pi4j.io.spi.SpiChannel;
 
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+
 public class WatchDecibelServiceByListener implements Runnable {
+	@FXML private Label notice;
 	List<SeatingPlace> seats;
 	
 	public WatchDecibelServiceByListener(List<SeatingPlace> seats) {
@@ -65,7 +70,18 @@ public class WatchDecibelServiceByListener implements Runnable {
 					for(SeatingPlace seat : seats) {
 						if(seat.isNoisy()) {
 							//경고 띄우기(fx)
-							System.out.println(seat.getGpioPinNumber() + "번 자리 조용히 하세요");
+							//System.out.println(seat.getGpioPinNumber() + "번 자리 조용히 하세요");
+							Platform.runLater(() -> {
+								try {
+									notice.setText(seat.getGpioPinNumber() + "번 자리 조용히 하세요");
+									Thread.sleep(1000);
+									notice.setText("도서관 환경관리 시스템");
+									
+									
+								} catch (Exception e){
+									e.printStackTrace();
+								}
+							});
 							//noisy to false
 							seat.setNoisy(false);
 						}
