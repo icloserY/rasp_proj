@@ -37,6 +37,7 @@ public class WatchEnvironmentService implements Runnable {
 			Runtime rt= Runtime.getRuntime();
 			String[] cmd = {"python", filePath};
 			
+			System.out.println("before while");
 			while(flag) {
 				Process p=rt.exec(cmd);
 				
@@ -96,7 +97,6 @@ public class WatchEnvironmentService implements Runnable {
 						System.out.println("Data Error");
 						flag = false;
 					}
-					System.out.println(temperature + " " + humidity);
 				}
 				bri.close();
 				p.waitFor();
