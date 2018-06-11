@@ -97,6 +97,7 @@ public class WatchEnvironmentService implements Runnable {
 						System.out.println("Data Error");
 						flag = false;
 					}
+					System.out.println(temperature + " " + humidity);
 				}
 				bri.close();
 				p.waitFor();
