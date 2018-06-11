@@ -45,6 +45,7 @@ public class WatchEnvironmentService implements Runnable {
 				if((line = bri.readLine()) != null) {
 					if(!(line.contains("ERR_CRC") && !line.contains("ERR_FTR"))){
 						data=line.split(", ");
+						System.out.println(line);
 						env.setTemperature(temperature = Float.parseFloat(data[0]));
 						env.setHumidity(humidity = Float.parseFloat(data[1]));
 						
