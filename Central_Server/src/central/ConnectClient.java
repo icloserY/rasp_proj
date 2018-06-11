@@ -11,11 +11,14 @@ public class ConnectClient {
 	SocketChannel socketChannel;
 	ExecutorService executorService;
 	List<ConnectClient> connections;
+	static int number = 1;
+	String name = "Local_Server ";
 	
 	public ConnectClient(SocketChannel socketChannel, ExecutorService executorService, List<ConnectClient> connections) {
 		this.socketChannel = socketChannel;
 		this.executorService = executorService;
 		this.connections = connections;
+		name += number++ + "번";
 		receive();
 	}
 	

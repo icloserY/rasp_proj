@@ -31,6 +31,7 @@ public class StartMain extends Application{
 						if(command.equalsIgnoreCase("sta")  && !serverStatus) {
 							local.startLocal();
 							serverStatus = true;
+							flag = false;
 						} else if(command.equalsIgnoreCase("sto") && serverStatus) {
 							local.stopLocal();
 							serverStatus = false;

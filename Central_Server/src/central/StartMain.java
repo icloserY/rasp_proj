@@ -29,7 +29,7 @@ public class StartMain {
 						serverStatus = false;
 					} else if(command.equalsIgnoreCase("sta") && serverStatus) {
 						System.out.println("서버가 이미 동작 중입니다.");
-					} else if(command.equalsIgnoreCase("sto") && serverStatus) {
+					} else if(command.equalsIgnoreCase("shw") && serverStatus) {
 						central.showConnection();
 					} else {
 						System.out.println("잘못된 명령어 입니다.");
