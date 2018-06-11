@@ -36,10 +36,11 @@ public class LocalServer {
 		try {
 			localSocketChannel = SocketChannel.open();
 			localSocketChannel.configureBlocking(true);
-			localSocketChannel.bind(new InetSocketAddress("220.66.115.136", 5001));
+			localSocketChannel.connect(new InetSocketAddress("localhost", 5001));
 			
 			System.out.println("[연결수락 : " + localSocketChannel.getRemoteAddress() + "]");
 		}catch(Exception e) {
+			e.printStackTrace();
 			if(localSocketChannel.isOpen()) {stopLocal();}
 			return;
 		}
