@@ -6,6 +6,6 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
 	prefWidth="500" prefHeight="350">
 	<children>
-		<Label alignment="CENTER" prefWidth="215" text="도서관 환경관리 시스템" />
+		<Label fx:id="notice" alignment="CENTER" prefWidth="215" text="도서관 환경관리 시스템" />
 	</children>
 </AnchorPane>
