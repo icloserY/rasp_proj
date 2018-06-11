@@ -66,32 +66,37 @@ public class WatchDecibelServiceByListener implements Runnable {
 	        };
 	        
 	        gpio.addListener(listener, inputs);
-	        
-	      //경고 생성
+	        boolean b_notice = false;
+	        //경고 생성
 			while(flag) {
 				try {
 					for(SeatingPlace seat : seats) {
 						if(seat.isNoisy()) {
 							//경고 띄우기(fx)
-							//System.out.println(seat.getGpioPinNumber() + "번 자리 조용히 하세요");
 							Platform.runLater(() -> {
 								try {
 									notice.setText(seat.getGpioPinNumber() + "번 자리 조용히 하세요");
-									Thread.sleep(1000);
-									notice.setText("도서관 환경관리 시스템");
-									
-									
 								} catch (Exception e){
 									e.printStackTrace();
 								}
 							});
 							//noisy to false
 							seat.setNoisy(false);
+							b_notice = true;
+						}
+						if(b_notice) {
+							Thread.sleep(1000);
+							Platform.runLater(() -> {
+								try {
+									notice.setText("도서관 환경관리 시스템");
+								} catch (Exception e){
+									e.printStackTrace();
+								}
+							});
+							b_notice = false;
 						}
 					}
-					
-					
-					Thread.sleep(1000);
+					Thread.sleep(500);
 				}catch(Exception e) {
 					e.printStackTrace();
 				}
