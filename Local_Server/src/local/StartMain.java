@@ -22,8 +22,6 @@ public class StartMain extends Application{
 			boolean flag = true;
 			
 			while(flag) {
-				System.out.println("명령을 입력하세요.");
-				System.out.println("1.start(sta), 2.stop(sto)");
 				String command = "NOTHING";
 				try {
 					//command = reader.readLine();
