@@ -1,7 +1,9 @@
 package local;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import com.pi4j.gpio.extension.base.AdcGpioProvider;
 import com.pi4j.gpio.extension.mcp.MCP3008GpioProvider;
@@ -18,11 +20,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 public class WatchDecibelServiceByListener implements Runnable {
-	@FXML private Label notice;
+	private Label notice;
 	List<SeatingPlace> seats;
 	
-	public WatchDecibelServiceByListener(List<SeatingPlace> seats) {
+	public WatchDecibelServiceByListener(List<SeatingPlace> seats, Label notice) {
 		this.seats = seats;
+		this.notice = notice;
 	}
 	GpioController gpio;
 	

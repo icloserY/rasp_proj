@@ -30,7 +30,7 @@ public class LocalServer {
 		return local;
 	}
 
-	public void startLocal() {
+	public void startLocal(Controller controller) {
 		System.out.println("local 시작");
 		//executorService -> watchService 등록
 		try {
@@ -44,7 +44,7 @@ public class LocalServer {
 			if(localSocketChannel.isOpen()) {stopLocal();}
 			return;
 		}
-		executorService.submit(decibelService = new WatchDecibelServiceByListener(seats));
+		executorService.submit(decibelService = new WatchDecibelServiceByListener(seats, controller.getNotice()));
 		executorService.submit(environmentService = new WatchEnvironmentService(env, localSocketChannel, executorService));
 		
 	}

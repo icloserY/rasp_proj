@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
+	fx:controller="local.Controller"
 	prefWidth="500" prefHeight="350">
 	<children>
 		<Label fx:id="notice" alignment="CENTER" prefWidth="215" text="도서관 환경관리 시스템" />
