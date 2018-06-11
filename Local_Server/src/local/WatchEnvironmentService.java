@@ -100,7 +100,7 @@ public class WatchEnvironmentService implements Runnable {
 				}
 				bri.close();
 				p.waitFor();
-				Thread.sleep(500);
+				Thread.sleep(4000);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
