@@ -82,7 +82,7 @@ public class CentralServer {
 	}
 	
 	public void showConnection() {
-		if(connections != null) {
+		if(!connections.isEmpty()) {
 			System.out.println("연결 된 connections");
 			for(ConnectClient connectClient : connections) {
 				System.out.println(connectClient.name);
