@@ -29,12 +29,14 @@ public class ConnectClient {
 						throw new IOException();
 					}
 					
-					String message = "[요청 받음 : " + socketChannel.getRemoteAddress() + "]";
-					System.out.println(message);
-					
 					byteBuffer.flip();
 					Charset charset = Charset.forName("UTF-8");
+					
 					String data = charset.decode(byteBuffer).toString();
+					String message = "[요청 받음 : " + socketChannel.getRemoteAddress() + "] ->" + "";
+					
+					System.out.print(message);
+					System.out.println(data);
 					
 				}catch(Exception e) {
 					connections.remove(ConnectClient.this);
