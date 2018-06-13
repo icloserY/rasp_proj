@@ -6,6 +6,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.util.concurrent.ExecutorService;
 
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import local.Environment.Status;
 
@@ -51,6 +52,14 @@ public class WatchEnvironmentService implements Runnable {
 						env.setTemperature(temperature = Float.parseFloat(data[0]));
 						env.setHumidity(humidity = Float.parseFloat(data[1]));
 						
+						Platform.runLater(() -> {
+							try {
+								notice_env.setText("온도 : " + Float.toString(env.getTemperature()) + " 습도 : " + Float.toString(env.getHumidity()));
+								} catch (Exception e){
+								e.printStackTrace();
+							}
+						});
+						
 						//온도 감시
 						if (temperature >= Environment.PROPER_TEMPERATURE + 3 && env.tempStatus == Status.PROPER_TEMPERATURE) {
 							env.tempStatus = Status.OVER_TEMPERATURE;
@@ -92,8 +101,6 @@ public class WatchEnvironmentService implements Runnable {
 							env.humStatus = Status.PROPER_HUMIDITY;
 							send(env.humStatus.name());
 						}
-						
-						notice_env.setText("온도 : " + Float.toString(env.getTemperature()) + " 습도 : " + Float.toString(env.getHumidity()));
 					}
 					else { 
 						System.out.println("Data Error");
