@@ -36,7 +36,7 @@ public class LocalServer {
 		try {
 			localSocketChannel = SocketChannel.open();
 			localSocketChannel.configureBlocking(true);
-			localSocketChannel.connect(new InetSocketAddress("192.168.43.148", 5001));
+			localSocketChannel.connect(new InetSocketAddress("192.168.0.68", 5001));
 			
 		}catch(Exception e) {
 			e.printStackTrace();
