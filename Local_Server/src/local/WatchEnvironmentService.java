@@ -90,8 +90,7 @@ public class WatchEnvironmentService implements Runnable {
 							send(env.humStatus.name());
 						}
 						
-						System.out.println("Temperature is : "+env.getTemperature()+ 
-											" 'C Humidity is :"+ env.getHumidity()+" %RH");
+						//System.out.println("Temperature is : "+env.getTemperature()+ " 'C Humidity is :"+ env.getHumidity()+" %RH");
 					}
 					else { 
 						System.out.println("Data Error");
