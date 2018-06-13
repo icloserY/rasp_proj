@@ -31,7 +31,7 @@ public class WatchEnvironmentService implements Runnable {
 	public void run() {
 		//온도, 습도 감시
 		try {
-			System.out.println("온도, 습도 감지 시작");
+			//System.out.println("온도, 습도 감지 시작");
 			
 			boolean flag = true;
 			Runtime rt= Runtime.getRuntime();
@@ -53,18 +53,18 @@ public class WatchEnvironmentService implements Runnable {
 							env.tempStatus = Status.OVER_TEMPERATURE;
 							
 							//통지 (에어컨 가동)
-							System.out.println("에어콘 가동");
+							//System.out.println("에어콘 가동");
 							send(env.tempStatus.name());
 						}else if (temperature <= Environment.PROPER_TEMPERATURE - 3 && env.tempStatus == Status.PROPER_TEMPERATURE) {
 							env.tempStatus = Status.LOW_TEMPERATURE;
 								
 							//통지 (히터 가동)
-							System.out.println("히터 가동");
+							//System.out.println("히터 가동");
 							send(env.tempStatus.name());
 						}else if (temperature <= Environment.PROPER_TEMPERATURE + 1.5f && temperature > Environment.PROPER_TEMPERATURE - 1.5f
 									&& (env.tempStatus == Status.OVER_TEMPERATURE || env.tempStatus == Status.LOW_TEMPERATURE)) {
 							//통지 (에어컨 중지 또는 히터 중지)
-							System.out.println("에어콘 중지, 히터 중지");
+							//System.out.println("에어콘 중지, 히터 중지");
 							env.tempStatus = Status.PROPER_TEMPERATURE;
 							send(env.tempStatus.name());
 						}
@@ -74,18 +74,18 @@ public class WatchEnvironmentService implements Runnable {
 							env.humStatus = Status.OVER_HUMIDITY;
 								
 							//통지 (제습기 가동)
-							System.out.println("제습기 가동");
+							//System.out.println("제습기 가동");
 							send(env.humStatus.name());
 						}else if (humidity <= Environment.PROPER_HUMIDITY - 10 && env.humStatus == Status.PROPER_HUMIDITY) {
 							env.humStatus = Status.LOW_HUMIDITY;
 								
 							//통지 (가습기 가동)
-							System.out.println("가습기 가동");
+							//System.out.println("가습기 가동");
 							send(env.humStatus.name());
 						}else if (humidity <= Environment.PROPER_HUMIDITY + 5 && humidity > Environment.PROPER_HUMIDITY - 5
 									&& (env.humStatus == Status.OVER_HUMIDITY || env.humStatus == Status.LOW_HUMIDITY)) {
 							//통지 (가습기 또는 제습기 중지)
-							System.out.println("가습기 중지, 제습기 중지");
+							//System.out.println("가습기 중지, 제습기 중지");
 							env.humStatus = Status.PROPER_HUMIDITY;
 							send(env.humStatus.name());
 						}
@@ -115,7 +115,8 @@ public class WatchEnvironmentService implements Runnable {
 				ByteBuffer byteBuffer = charset.encode(data);
 				localSocketChannel.write(byteBuffer);
 			}catch(Exception e) {
-				System.out.println("서버 통신 불가");
+				e.printStackTrace();
+				//System.out.println("서버 통신 불가");
 			}
 		});
 	}

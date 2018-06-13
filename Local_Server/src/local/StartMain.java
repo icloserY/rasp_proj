@@ -1,9 +1,5 @@
 package local;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,34 +12,18 @@ public class StartMain extends Application{
 	
 	public static void main(String[] args) {
 		LocalServer.executorService.submit(() -> {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, Charset.forName("UTF-8")));
 			LocalServer local = LocalServer.getInstance();
-			boolean serverStatus = false;
 			boolean flag = true;
 			
 			while(flag) {
-				String command = "NOTHING";
 				try {
-					//command = reader.readLine();
-					command = "sta";
-					if(!command.equals("NOTHING")) {
-						if(command.equalsIgnoreCase("sta")  && !serverStatus) {
-							if(controller != null) {
-								local.startLocal(controller);
-								serverStatus = true;
-								flag = false;
-							}
-						} else if(command.equalsIgnoreCase("sto") && serverStatus) {
-							local.stopLocal();
-							serverStatus = false;
-						} else if(command.equalsIgnoreCase("sta") && serverStatus) {
-							System.out.println("서버가 이미 동작 중입니다.");
-						} else {
-							System.out.println("잘못된 명령어 입니다.");
-						}
+					if(controller != null) {
+						local.startLocal(controller);
+						flag = false;
 					}
 					Thread.sleep(1000);
-				} catch (Exception e) {
+				}
+				 catch (Exception e) {
 					System.out.println("오류 발생 다시 시작해 주세요.");
 					e.printStackTrace();
 					flag = false;
