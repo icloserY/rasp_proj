@@ -41,7 +41,6 @@ public class WatchDecibelServiceByListener implements Runnable {
 		boolean flag = true;
 		Environment env = Environment.getInstance();
 		
-		label_env.setText("온도 : " + Float.toString(env.getTemperature()) + " 습도 : " + Float.toString(env.getHumidity()));
 		try {
 			gpio = GpioFactory.getInstance();
 			
@@ -78,6 +77,9 @@ public class WatchDecibelServiceByListener implements Runnable {
 							Platform.runLater(() -> {
 								try {
 									notice.setText(seat.getGpioPinNumber() + "번 자리 조용히 하세요");
+									
+									label_env.setText("온도 : " + Float.toString(env.getTemperature()) + " 습도 : " + Float.toString(env.getHumidity()));
+									
 								} catch (Exception e){
 									e.printStackTrace();
 								}
