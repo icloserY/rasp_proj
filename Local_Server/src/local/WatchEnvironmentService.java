@@ -24,6 +24,8 @@ public class WatchEnvironmentService implements Runnable {
 	SimpleDateFormat dayTime = null;
 	Date time = null;
 	String str_time = null;
+
+	boolean title_flag = true;
 	
 	private static String line;
 	private static String[] data;
@@ -72,7 +74,13 @@ public class WatchEnvironmentService implements Runnable {
 								notice_env.setText("온도 : " + Float.toString(env.getTemperature()) + " ºC      " 
 													+ "  습도 : " + Float.toString(env.getHumidity()) + " %");
 								
+								if (title_flag) {
 								title_label.setText("연암 도서관은 쾌적환 환경을 지향합니다.");
+								title_flag = false;
+								} else {
+									title_label.setText("도서관 환경 관리 시스템");
+									title_flag = true;
+								}
 								} catch (Exception e){
 								e.printStackTrace();
 							}
