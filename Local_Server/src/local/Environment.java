@@ -13,6 +13,14 @@ public class Environment {
 	private float _temperature = 0f;
 	private float _humidity = 0f;
 	
+	
+	private static Environment env = new Environment();
+	
+	public static Environment getInstance() {
+		return env;
+	}
+	
+	
 	static final float PROPER_TEMPERATURE = 23;
 	static final float PROPER_HUMIDITY = 50;
 	

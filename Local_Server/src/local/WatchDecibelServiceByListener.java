@@ -35,6 +35,8 @@ public class WatchDecibelServiceByListener implements Runnable {
 		//System.out.println("데시벨 감지 시작");
 		//System.out.println("<--Pi4J--> MCP3008 ADC Example ... started.");
 		boolean flag = true;
+		Environment env = Environment.getInstance();
+		
 		try {
 			gpio = GpioFactory.getInstance();
 			
@@ -47,10 +49,6 @@ public class WatchDecibelServiceByListener implements Runnable {
 	        provider.setEventThreshold(5, inputs);
 	        provider.setMonitorInterval(250);
 	        
-	        //for(GpioPinAnalogInput input : inputs){
-	            //System.out.println("<INITIAL VALUE> [" + input.getName() + "] : RAW VALUE = " + input.getValue());
-	        //}
-	        
 	        GpioPinListenerAnalog listener = new GpioPinListenerAnalog()
 	        {
 	            @Override
@@ -60,7 +58,6 @@ public class WatchDecibelServiceByListener implements Runnable {
 	                int seatNum = Integer.parseInt(event.getPin().getName()) - 1;
 	                if(value > 50) {
 	                	seats.get(seatNum).setNoisy(true);
-	                	//System.out.println("<CHANGED VALUE> [" + event.getPin().getName() + "번 자리" + "] : RAW VALUE = " + value);
 	                }
 	            }
 	        };
@@ -69,6 +66,7 @@ public class WatchDecibelServiceByListener implements Runnable {
 	        boolean b_notice = false;
 	        //경고 생성
 			while(flag) {
+				System.out.println(env.getHumidity());
 				try {
 					for(SeatingPlace seat : seats) {
 						if(seat.isNoisy()) {
