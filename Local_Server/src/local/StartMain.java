@@ -15,6 +15,8 @@ public class StartMain extends Application{
 			LocalServer local = LocalServer.getInstance();
 			boolean flag = true;
 			
+			System.out.println(javafx.scene.text.Font.getFamilies());
+			
 			while(flag) {
 				try {
 					if(controller != null) {

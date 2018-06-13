@@ -2,11 +2,19 @@
 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
+<VBox xmlns:fx="http://javafx.com/fxml"
 	fx:controller="local.Controller"
-	prefWidth="500" prefHeight="350">
+	fillWidth="false"
+	alignment="CENTER"
+	prefWidth="800" prefHeight="480">
 	<children>
-		<Label fx:id="notice" alignment="CENTER" prefWidth="215" text="도서관 환경관리 시스템" />
+		<Label fx:id="notice" alignment="CENTER" prefWidth="750" text="도서관 환경관리 시스템">
+			<font>
+				<Font name="LG스마트체 Bold" size="24.0" />
+			</font>
+		</Label>
 	</children>
-</AnchorPane>
+</VBox>
