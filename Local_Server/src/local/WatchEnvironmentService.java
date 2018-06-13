@@ -20,8 +20,8 @@ public class WatchEnvironmentService implements Runnable {
 	private Label notice_env;
 	private Label time_label;
 	
-	long time = 0;
 	SimpleDateFormat dayTime = null;
+	Date time = null;
 	String str_time = null;
 	
 	private static String line;
@@ -62,10 +62,9 @@ public class WatchEnvironmentService implements Runnable {
 						
 						Platform.runLater(() -> {
 							try {
-								time = System.currentTimeMillis();
-								dayTime = new SimpleDateFormat("yyyy-mm-dd hh:mm");
-								str_time = dayTime.format(new Date(time));
-								
+								dayTime = new SimpleDateFormat ( "yyyy.MM.dd HH:mm");
+								time = new Date();
+								str_time = dayTime.format (time);
 								time_label.setText(str_time);
 								
 								notice_env.setText("온도 : " + Float.toString(env.getTemperature()) + " ºC      " 
