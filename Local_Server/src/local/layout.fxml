@@ -11,22 +11,22 @@
 	alignment="CENTER"
 	prefWidth="800" prefHeight="460">
 	<children>
-		<Label fx:id="time_label" alignment="CENTER" prefWidth="750" preHeight="100">
+		<Label fx:id="time_label" alignment="CENTER" prefWidth="750" prefHeight="100">
 			<font>
 				<Font size="18.0" />
 			</font>
 		</Label>
-		<Label fx:id="notice_env" alignment="CENTER" prefWidth="750" preHeight="100">
+		<Label fx:id="notice_env" alignment="CENTER" prefWidth="750" prefHeight="100">
 			<font>
 				<Font size="20.0" />
 			</font>
 		</Label>
-		<Label fx:id="title_label" alignment="CENTER" prefWidth="750" preHeight="150" text="도서관 환경 관리 시스템">
+		<Label fx:id="title_label" alignment="CENTER" prefWidth="750" prefHeight="150" text="도서관 환경 관리 시스템">
 			<font>
 				<Font size="24.0" />
 			</font>
 		</Label>
-		<Label fx:id="notice_db" alignment="CENTER" prefWidth="750" preHeight="100">
+		<Label fx:id="notice_db" alignment="CENTER" prefWidth="750" prefHeight="100">
 			<font>
 				<Font size="24.0" />
 			</font>
