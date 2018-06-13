@@ -4,6 +4,8 @@ import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 
 import javafx.application.Platform;
@@ -16,6 +18,11 @@ public class WatchEnvironmentService implements Runnable {
 	private SocketChannel localSocketChannel;
 	private ExecutorService executorService;
 	private Label notice_env;
+	private Label time_label;
+	
+	long time = 0;
+	SimpleDateFormat dayTime = null;
+	String str_time = null;
 	
 	private static String line;
 	private static String[] data;
@@ -25,11 +32,12 @@ public class WatchEnvironmentService implements Runnable {
 	float humidity = 0.0f;
 	
     public WatchEnvironmentService(Environment env, SocketChannel localSocketChannel,
-    								ExecutorService executorService, Label notice_env) {
+    								ExecutorService executorService, Label notice_env, Label time_label) {
 		this.env = env;
 		this.localSocketChannel = localSocketChannel;
 		this.executorService = executorService;
 		this.notice_env = notice_env;
+		this.time_label = time_label;
 	}
 	@Override
 	public void run() {
@@ -54,7 +62,14 @@ public class WatchEnvironmentService implements Runnable {
 						
 						Platform.runLater(() -> {
 							try {
-								notice_env.setText("온도 : " + Float.toString(env.getTemperature()) + " 습도 : " + Float.toString(env.getHumidity()));
+								time = System.currentTimeMillis();
+								dayTime = new SimpleDateFormat("yyyy년 mm월 dd일 hh:mm:ss");
+								str_time = dayTime.format(new Date(time));
+								
+								time_label.setText(str_time);
+								
+								notice_env.setText("온도 : " + Float.toString(env.getTemperature()) + " ºC      " 
+													+ "  습도 : " + Float.toString(env.getHumidity()) + " %");
 								} catch (Exception e){
 								e.printStackTrace();
 							}
@@ -109,7 +124,7 @@ public class WatchEnvironmentService implements Runnable {
 				}
 				bri.close();
 				p.waitFor();
-				Thread.sleep(4000);
+				Thread.sleep(1000);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

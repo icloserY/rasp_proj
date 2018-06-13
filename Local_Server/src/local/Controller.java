@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 public class Controller implements Initializable {
 	@FXML private Label notice_db;
 	@FXML private Label notice_env;
+	@FXML private Label time_label;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -23,5 +24,9 @@ public class Controller implements Initializable {
 	
 	public Label getNotice_env() {
 		return this.notice_env;
+	}
+	
+	public Label getTime_label() {
+		return this.time_label;
 	}
 }
