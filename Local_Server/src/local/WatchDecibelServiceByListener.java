@@ -1,9 +1,7 @@
 package local;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import com.pi4j.gpio.extension.base.AdcGpioProvider;
 import com.pi4j.gpio.extension.mcp.MCP3008GpioProvider;
@@ -16,18 +14,15 @@ import com.pi4j.io.gpio.event.GpioPinListenerAnalog;
 import com.pi4j.io.spi.SpiChannel;
 
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 public class WatchDecibelServiceByListener implements Runnable {
 	private Label notice_db;
 	List<SeatingPlace> seats;
-	private Environment env;
 	
-	public WatchDecibelServiceByListener(Environment env, List<SeatingPlace> seats, Label notice_db) {
+	public WatchDecibelServiceByListener(List<SeatingPlace> seats, Label notice_db) {
 		this.seats = seats;
 		this.notice_db = notice_db;
-		this.env = env;
 	}
 	GpioController gpio;
 	
@@ -37,7 +32,6 @@ public class WatchDecibelServiceByListener implements Runnable {
 		//System.out.println("데시벨 감지 시작");
 		//System.out.println("<--Pi4J--> MCP3008 ADC Example ... started.");
 		boolean flag = true;
-		Environment env = Environment.getInstance();
 		
 		try {
 			gpio = GpioFactory.getInstance();
