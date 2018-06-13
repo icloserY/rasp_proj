@@ -21,13 +21,15 @@ import javafx.scene.control.Label;
 
 public class WatchDecibelServiceByListener implements Runnable {
 	private Label notice;
+	private Label label_env;
 	List<SeatingPlace> seats;
 	private Environment env;
 	
-	public WatchDecibelServiceByListener(Environment env, List<SeatingPlace> seats, Label notice) {
+	public WatchDecibelServiceByListener(Environment env, List<SeatingPlace> seats, Label notice, Label label_env) {
 		this.seats = seats;
 		this.notice = notice;
 		this.env = env;
+		this.label_env = label_env;
 	}
 	GpioController gpio;
 	
@@ -39,6 +41,7 @@ public class WatchDecibelServiceByListener implements Runnable {
 		boolean flag = true;
 		Environment env = Environment.getInstance();
 		
+		label_env.setText("온도 : " + Float.toString(env.getTemperature()) + " 습도 : " + Float.toString(env.getHumidity()));
 		try {
 			gpio = GpioFactory.getInstance();
 			
@@ -68,7 +71,6 @@ public class WatchDecibelServiceByListener implements Runnable {
 	        boolean b_notice = false;
 	        //경고 생성
 			while(flag) {
-				System.out.println(env.getHumidity());
 				try {
 					for(SeatingPlace seat : seats) {
 						if(seat.isNoisy()) {

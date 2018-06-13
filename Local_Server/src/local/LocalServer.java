@@ -44,7 +44,7 @@ public class LocalServer {
 			return;
 		}
 		executorService.submit(environmentService = new WatchEnvironmentService(env, localSocketChannel, executorService));
-		executorService.submit(decibelService = new WatchDecibelServiceByListener(env, seats, controller.getNotice()));
+		executorService.submit(decibelService = new WatchDecibelServiceByListener(env, seats, controller.getNotice(), controller.getEnv()));
 	}
 	
 	public void stopLocal() {
