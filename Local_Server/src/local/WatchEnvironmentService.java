@@ -6,6 +6,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.util.concurrent.ExecutorService;
 
+import javafx.scene.control.Label;
 import local.Environment.Status;
 
 
@@ -13,6 +14,7 @@ public class WatchEnvironmentService implements Runnable {
 	private Environment env;
 	private SocketChannel localSocketChannel;
 	private ExecutorService executorService;
+	private Label notice_env;
 	
 	private static String line;
 	private static String[] data;
@@ -22,10 +24,11 @@ public class WatchEnvironmentService implements Runnable {
 	float humidity = 0.0f;
 	
     public WatchEnvironmentService(Environment env, SocketChannel localSocketChannel,
-    								ExecutorService executorService) {
+    								ExecutorService executorService, Label notice_env) {
 		this.env = env;
 		this.localSocketChannel = localSocketChannel;
 		this.executorService = executorService;
+		this.notice_env = notice_env;
 	}
 	@Override
 	public void run() {
@@ -90,7 +93,7 @@ public class WatchEnvironmentService implements Runnable {
 							send(env.humStatus.name());
 						}
 						
-						//System.out.println("Temperature is : "+env.getTemperature()+ " 'C Humidity is :"+ env.getHumidity()+" %RH");
+						notice_env.setText("온도 : " + Float.toString(env.getTemperature()) + " 습도 : " + Float.toString(env.getHumidity()));
 					}
 					else { 
 						System.out.println("Data Error");

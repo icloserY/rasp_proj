@@ -20,16 +20,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 public class WatchDecibelServiceByListener implements Runnable {
-	private Label notice;
-	private Label label_env;
+	private Label notice_db;
 	List<SeatingPlace> seats;
 	private Environment env;
 	
-	public WatchDecibelServiceByListener(Environment env, List<SeatingPlace> seats, Label notice, Label label_env) {
+	public WatchDecibelServiceByListener(Environment env, List<SeatingPlace> seats, Label notice_db) {
 		this.seats = seats;
-		this.notice = notice;
+		this.notice_db = notice_db;
 		this.env = env;
-		this.label_env = label_env;
 	}
 	GpioController gpio;
 	
@@ -76,11 +74,8 @@ public class WatchDecibelServiceByListener implements Runnable {
 							//경고 띄우기(fx)
 							Platform.runLater(() -> {
 								try {
-									notice.setText(seat.getGpioPinNumber() + "번 자리 조용히 하세요");
-									
-									label_env.setText("온도 : " + Float.toString(env.getTemperature()) + " 습도 : " + Float.toString(env.getHumidity()));
-									
-								} catch (Exception e){
+									notice_db.setText(seat.getGpioPinNumber() + "번 자리 조용히 하세요");
+									} catch (Exception e){
 									e.printStackTrace();
 								}
 							});
@@ -92,7 +87,7 @@ public class WatchDecibelServiceByListener implements Runnable {
 							Thread.sleep(2000);
 							Platform.runLater(() -> {
 								try {
-									notice.setText("도서관 환경관리 시스템");
+									notice_db.setText("도서관 환경관리 시스템");
 								} catch (Exception e){
 									e.printStackTrace();
 								}
