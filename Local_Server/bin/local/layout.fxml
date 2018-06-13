@@ -9,11 +9,11 @@
 	fx:controller="local.Controller"
 	fillWidth="false"
 	alignment="CENTER"
-	prefWidth="800" prefHeight="480">
+	prefWidth="800" prefHeight="460">
 	<children>
 		<Label fx:id="notice" alignment="CENTER" prefWidth="750" text="도서관 환경관리 시스템">
 			<font>
-				<Font name="LG스마트체 Bold" size="24.0" />
+				<Font size="24.0" />
 			</font>
 		</Label>
 	</children>
