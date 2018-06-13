@@ -11,6 +11,7 @@ public class Controller implements Initializable {
 	@FXML private Label notice_db;
 	@FXML private Label notice_env;
 	@FXML private Label time_label;
+	@FXML private Label title_label;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -28,5 +29,9 @@ public class Controller implements Initializable {
 	
 	public Label getTime_label() {
 		return this.time_label;
+	}
+	
+	public Label getTtle_label() {
+		return this.title_label;
 	}
 }

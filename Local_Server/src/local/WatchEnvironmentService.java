@@ -19,6 +19,7 @@ public class WatchEnvironmentService implements Runnable {
 	private ExecutorService executorService;
 	private Label notice_env;
 	private Label time_label;
+	private Label title_label;
 	
 	SimpleDateFormat dayTime = null;
 	Date time = null;
@@ -32,12 +33,13 @@ public class WatchEnvironmentService implements Runnable {
 	float humidity = 0.0f;
 	
     public WatchEnvironmentService(Environment env, SocketChannel localSocketChannel,
-    								ExecutorService executorService, Label notice_env, Label time_label) {
+    								ExecutorService executorService, Label notice_env, Label time_label, Label title_label) {
 		this.env = env;
 		this.localSocketChannel = localSocketChannel;
 		this.executorService = executorService;
 		this.notice_env = notice_env;
 		this.time_label = time_label;
+		this.title_label = title_label;
 	}
 	@Override
 	public void run() {
@@ -62,13 +64,15 @@ public class WatchEnvironmentService implements Runnable {
 						
 						Platform.runLater(() -> {
 							try {
-								dayTime = new SimpleDateFormat ( "yyyy.MM.dd HH:mm");
+								dayTime = new SimpleDateFormat ( "yyyy년 MM월 dd일 HH:mm");
 								time = new Date();
 								str_time = dayTime.format (time);
 								time_label.setText(str_time);
 								
 								notice_env.setText("온도 : " + Float.toString(env.getTemperature()) + " ºC      " 
 													+ "  습도 : " + Float.toString(env.getHumidity()) + " %");
+								
+								title_label.setText("연암 도서관은 쾌적환 환경을 지향합니다.");
 								} catch (Exception e){
 								e.printStackTrace();
 							}

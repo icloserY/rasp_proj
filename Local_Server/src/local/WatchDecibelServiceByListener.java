@@ -81,7 +81,7 @@ public class WatchDecibelServiceByListener implements Runnable {
 							Thread.sleep(2000);
 							Platform.runLater(() -> {
 								try {
-									notice_db.setText("도서관 환경관리 시스템");
+									notice_db.setText("");
 								} catch (Exception e){
 									e.printStackTrace();
 								}
