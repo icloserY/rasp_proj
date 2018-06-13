@@ -15,7 +15,7 @@ public class LocalServer {
 	//좌석
 	private List<SeatingPlace> seats = new ArrayList<>();
 	//온도, 습도 -> 환경
-	private Environment env = new Environment();
+	private Environment env = Environment.getInstance();
 	
 	//watchService, envService
 	private WatchDecibelServiceByListener decibelService;
@@ -43,7 +43,7 @@ public class LocalServer {
 			if(localSocketChannel.isOpen()) {stopLocal();}
 			return;
 		}
-		executorService.submit(decibelService = new WatchDecibelServiceByListener(seats, controller.getNotice()));
+		executorService.submit(decibelService = new WatchDecibelServiceByListener(env, seats, controller.getNotice()));
 		executorService.submit(environmentService = new WatchEnvironmentService(env, localSocketChannel, executorService));
 		
 	}

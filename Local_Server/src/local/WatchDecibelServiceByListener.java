@@ -22,10 +22,12 @@ import javafx.scene.control.Label;
 public class WatchDecibelServiceByListener implements Runnable {
 	private Label notice;
 	List<SeatingPlace> seats;
+	private Environment env;
 	
-	public WatchDecibelServiceByListener(List<SeatingPlace> seats, Label notice) {
+	public WatchDecibelServiceByListener(Environment env, List<SeatingPlace> seats, Label notice) {
 		this.seats = seats;
 		this.notice = notice;
+		this.env = env;
 	}
 	GpioController gpio;
 	
