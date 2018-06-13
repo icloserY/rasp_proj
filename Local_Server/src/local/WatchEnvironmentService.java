@@ -63,7 +63,7 @@ public class WatchEnvironmentService implements Runnable {
 						Platform.runLater(() -> {
 							try {
 								time = System.currentTimeMillis();
-								dayTime = new SimpleDateFormat("yyyy년 mm월 dd일 hh:mm:ss");
+								dayTime = new SimpleDateFormat("yyyy-mm-dd hh:mm");
 								str_time = dayTime.format(new Date(time));
 								
 								time_label.setText(str_time);
@@ -124,7 +124,7 @@ public class WatchEnvironmentService implements Runnable {
 				}
 				bri.close();
 				p.waitFor();
-				Thread.sleep(1000);
+				Thread.sleep(3000);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
