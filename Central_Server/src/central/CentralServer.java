@@ -36,42 +36,41 @@ public class CentralServer {
 	public void startCentral() {
 		System.out.println("central 시작");
 		//centralServer에 소켓 연결
-				executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		try {
+			serverSocketChannel = ServerSocketChannel.open();
+			serverSocketChannel.configureBlocking(true);
+			serverSocketChannel.bind(new InetSocketAddress(5550));
+			System.out.println("서버 대기중");
+		} catch(Exception e) {
+			if(serverSocketChannel.isOpen()) {
+				e.printStackTrace();
+				stopCentral();
+			}
+			return;
+		}
+		executorService.submit(()->{
+			while(true) {
 				try {
-					serverSocketChannel = ServerSocketChannel.open();
-					serverSocketChannel.configureBlocking(true);
-					serverSocketChannel.bind(new InetSocketAddress(5001));
-					System.out.println("서버 대기중");
-				} catch(Exception e) {
-					if(serverSocketChannel.isOpen()) {
-						e.printStackTrace();
-						stopCentral();
-					}
+					System.out.println("연결 대기");
+					SocketChannel socketChannel = serverSocketChannel.accept();
+					String message = "[연결 수락 : " + socketChannel.getRemoteAddress() + "]";
+					System.out.println(message);
+					
+					ConnectClient client = new ConnectClient(socketChannel, executorService, connections);
+					connections.add(client);
+				}catch(Exception e) {
+					if(serverSocketChannel.isOpen()) {stopCentral();}
 					return;
 				}
-				executorService.submit(()->{
-					while(true) {
-						try {
-							System.out.println("연결 대기");
-							SocketChannel socketChannel = serverSocketChannel.accept();
-							String message = "[연결 수락 : " + socketChannel.getRemoteAddress() + "]";
-							System.out.println(message);
-							
-							ConnectClient client = new ConnectClient(socketChannel, executorService, connections);
-							connections.add(client);
-						}catch(Exception e) {
-							if(serverSocketChannel.isOpen()) {stopCentral();}
-							return;
-						}
-					}
-				});
-				
-				
+			}
+		});	
+		/*	
 		//libraryMm에 소켓 연결
 		try {
 			librarySocketChannel = SocketChannel.open();
 			librarySocketChannel.configureBlocking(true);
-			librarySocketChannel.connect(new InetSocketAddress("220.66.115.136", 5550));
+			librarySocketChannel.connect(new InetSocketAddress("220.66.115.136", 5002));
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -82,7 +81,7 @@ public class CentralServer {
 			}}
 			return;
 		}
-		
+		*/
 	}
 	
 	public void stopCentral() {
