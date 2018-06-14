@@ -5,7 +5,11 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.util.concurrent.ExecutorService;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import javafx.application.Platform;
+import javafx.scene.control.Label;
 import local.Environment.Status;
 
 
@@ -13,6 +17,15 @@ public class WatchEnvironmentService implements Runnable {
 	private Environment env;
 	private SocketChannel localSocketChannel;
 	private ExecutorService executorService;
+	private Label notice_env;
+	private Label time_label;
+	private Label title_label;
+	
+	SimpleDateFormat dayTime = null;
+	Date time = null;
+	String str_time = null;
+	
+	boolean title_flag = true;
 	
 	private static String line;
 	private static String[] data;
@@ -22,10 +35,13 @@ public class WatchEnvironmentService implements Runnable {
 	float humidity = 0.0f;
 	
     public WatchEnvironmentService(Environment env, SocketChannel localSocketChannel,
-    								ExecutorService executorService) {
+    								ExecutorService executorService, Label notice_env, Label time_label, Label title_label) {
 		this.env = env;
 		this.localSocketChannel = localSocketChannel;
 		this.executorService = executorService;
+		this.notice_env = notice_env;
+		this.time_label = time_label;
+		this.title_label = title_label;
 	}
 	@Override
 	public void run() {
@@ -47,6 +63,28 @@ public class WatchEnvironmentService implements Runnable {
 						System.out.println(line);
 						env.setTemperature(temperature = Float.parseFloat(data[0]));
 						env.setHumidity(humidity = Float.parseFloat(data[1]));
+						
+						Platform.runLater(() -> {
+							try {
+								dayTime = new SimpleDateFormat ( "yyyy년 MM월 dd일 HH:mm");
+								time = new Date();
+								str_time = dayTime.format (time);
+								time_label.setText(str_time);
+								
+								notice_env.setText("온도 : " + Float.toString(env.getTemperature()) + " ºC      " 
+													+ "  습도 : " + Float.toString(env.getHumidity()) + " %");
+								
+								if (title_flag) {
+								title_label.setText("연암 도서관은 쾌적환 환경을 지향합니다.");
+								title_flag = false;
+								} else {
+									title_label.setText("도서관 환경 관리 시스템");
+									title_flag = true;
+								}
+								} catch (Exception e){
+								e.printStackTrace();
+							}
+						});
 						
 						//온도 감시
 						if (temperature >= Environment.PROPER_TEMPERATURE + 3 && env.tempStatus == Status.PROPER_TEMPERATURE) {
@@ -97,7 +135,7 @@ public class WatchEnvironmentService implements Runnable {
 				}
 				bri.close();
 				p.waitFor();
-				Thread.sleep(4000);
+				Thread.sleep(3000);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

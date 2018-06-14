@@ -1,9 +1,7 @@
 package local;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import com.pi4j.gpio.extension.base.AdcGpioProvider;
 import com.pi4j.gpio.extension.mcp.MCP3008GpioProvider;
@@ -16,20 +14,15 @@ import com.pi4j.io.gpio.event.GpioPinListenerAnalog;
 import com.pi4j.io.spi.SpiChannel;
 
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 public class WatchDecibelServiceByListener implements Runnable {
-	private Label notice;
-	private Label label_env;
+	private Label notice_db;
 	List<SeatingPlace> seats;
-	private Environment env;
 	
-	public WatchDecibelServiceByListener(Environment env, List<SeatingPlace> seats, Label notice, Label label_env) {
+	public WatchDecibelServiceByListener(List<SeatingPlace> seats, Label notice_db) {
 		this.seats = seats;
-		this.notice = notice;
-		this.env = env;
-		this.label_env = label_env;
+		this.notice_db = notice_db;
 	}
 	GpioController gpio;
 	
@@ -39,7 +32,6 @@ public class WatchDecibelServiceByListener implements Runnable {
 		//System.out.println("데시벨 감지 시작");
 		//System.out.println("<--Pi4J--> MCP3008 ADC Example ... started.");
 		boolean flag = true;
-		Environment env = Environment.getInstance();
 		
 		try {
 			gpio = GpioFactory.getInstance();
@@ -76,11 +68,8 @@ public class WatchDecibelServiceByListener implements Runnable {
 							//경고 띄우기(fx)
 							Platform.runLater(() -> {
 								try {
-									notice.setText(seat.getGpioPinNumber() + "번 자리 조용히 하세요");
-									
-									label_env.setText("온도 : " + Float.toString(env.getTemperature()) + " 습도 : " + Float.toString(env.getHumidity()));
-									
-								} catch (Exception e){
+									notice_db.setText(seat.getGpioPinNumber() + "번 자리 조용히 하세요");
+									} catch (Exception e){
 									e.printStackTrace();
 								}
 							});
@@ -92,7 +81,7 @@ public class WatchDecibelServiceByListener implements Runnable {
 							Thread.sleep(2000);
 							Platform.runLater(() -> {
 								try {
-									notice.setText("도서관 환경관리 시스템");
+									notice_db.setText("");
 								} catch (Exception e){
 									e.printStackTrace();
 								}
