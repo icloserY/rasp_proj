@@ -65,12 +65,12 @@ public class CentralServer {
 				}
 			}
 		});	
-		/*	
+			
 		//libraryMm에 소켓 연결
 		try {
 			librarySocketChannel = SocketChannel.open();
 			librarySocketChannel.configureBlocking(true);
-			librarySocketChannel.connect(new InetSocketAddress("220.66.115.136", 5002));
+			librarySocketChannel.connect(new InetSocketAddress("220.66.115.136", 5001));
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -81,7 +81,7 @@ public class CentralServer {
 			}}
 			return;
 		}
-		*/
+		
 	}
 	
 	public void stopCentral() {

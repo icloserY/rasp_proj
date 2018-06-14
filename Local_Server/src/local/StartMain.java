@@ -21,7 +21,7 @@ public class StartMain extends Application{
 						local.startLocal(controller);
 						flag = false;
 					}
-					Thread.sleep(1000);
+					Thread.sleep(100);
 				}
 				 catch (Exception e) {
 					System.out.println("오류 발생 다시 시작해 주세요.");
