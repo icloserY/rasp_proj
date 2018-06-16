@@ -39,7 +39,8 @@ public class WatchDecibelServiceByListener implements Runnable {
 	        final AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0);
 	        
 	        final GpioPinAnalogInput inputs[] = {
-	                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0, seats.get(0).getGpioPinNumber())
+	                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0, seats.get(0).getGpioPinNumber()),
+	                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH1, seats.get(1).getGpioPinNumber())
 	        };
 	        
 	        provider.setEventThreshold(5, inputs);
@@ -53,7 +54,7 @@ public class WatchDecibelServiceByListener implements Runnable {
 	                double value = event.getValue();
 	                int seatNum = Integer.parseInt(event.getPin().getName()) - 1;
 	                // System.out.println(value);
-	                if(value > 600) {
+	                if(value > 700) {
 	                	seats.get(seatNum).setNoisy(true);
 	                }
 	            }
