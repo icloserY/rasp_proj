@@ -53,7 +53,7 @@ public class WatchDecibelServiceByListener implements Runnable {
 	                double value = event.getValue();
 	                int seatNum = Integer.parseInt(event.getPin().getName()) - 1;
 	                System.out.println(value);
-	                if(value > 50) {
+	                if(value > 600) {
 	                	seats.get(seatNum).setNoisy(true);
 	                }
 	            }
