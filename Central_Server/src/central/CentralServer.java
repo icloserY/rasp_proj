@@ -2,8 +2,10 @@ package central;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -69,14 +71,15 @@ public class CentralServer {
 					return;
 				}
 			}
-		});	
-		/*	
+		});
 		//libraryMm에 소켓 연결
 		try {
 			librarySocketChannel = SocketChannel.open();
 			librarySocketChannel.configureBlocking(true);
 			librarySocketChannel.connect(new InetSocketAddress("220.66.115.136", 5001));
 			
+			String value = PROPER_TEMPERATURE + "," + PROPER_HUMIDITY;
+			send(value);
 		}catch(Exception e) {
 			e.printStackTrace();
 			if(librarySocketChannel.isOpen()) {try {
@@ -86,7 +89,6 @@ public class CentralServer {
 			}}
 			return;
 		}
-		*/
 	}
 	
 	public void stopCentral() {
@@ -113,5 +115,17 @@ public class CentralServer {
 			System.out.print("연결 된 connections : ");
 			System.out.println(connections.size());
 		}
+	}
+	
+	void send(String data) {
+		executorService.submit(()->{
+			try {
+				Charset charset = Charset.forName("UTF-8");
+				ByteBuffer byteBuffer = charset.encode(data);
+				this.librarySocketChannel.write(byteBuffer);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 }
