@@ -70,7 +70,7 @@ public class CentralServer {
 				}
 			}
 		});	
-			
+		/*	
 		//libraryMm에 소켓 연결
 		try {
 			librarySocketChannel = SocketChannel.open();
@@ -86,7 +86,7 @@ public class CentralServer {
 			}}
 			return;
 		}
-		
+		*/
 	}
 	
 	public void stopCentral() {
