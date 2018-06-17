@@ -80,10 +80,6 @@ public class LocalServer {
 					Charset charset = Charset.forName("UTF-8");
 					
 					String data = charset.decode(byteBuffer).toString();
-					String message = "[요청 받음 : " + localSocketChannel.getRemoteAddress() + "] ->" + "";
-					
-					System.out.print(message);
-					System.out.println(data);
 					
 					String[] value = data.split(",");
 					if (value[0].equalsIgnoreCase("setPropTemp")) {
@@ -94,9 +90,6 @@ public class LocalServer {
 						Environment.PROPER_TEMPERATURE = Float.parseFloat(value[1]);
 						Environment.PROPER_HUMIDITY = Float.parseFloat(value[2]);
 					}
-					System.out.println(Environment.PROPER_TEMPERATURE);
-					System.out.println(Environment.PROPER_HUMIDITY);
-					
 				}catch(Exception e) {
 					localSocketChannel.close();
 				}
