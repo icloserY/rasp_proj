@@ -60,11 +60,15 @@ public class CentralServer {
 					String message = "[연결 수락 : " + socketChannel.getRemoteAddress() + "]";
 					System.out.println(message);
 					
-					ConnectClient client = new ConnectClient(socketChannel, executorService, connections);
+					ConnectClient client = new ConnectClient(socketChannel, executorService, connections, central);
 					connections.add(client);
 					
-					String value = PROPER_TEMPERATURE + "," + PROPER_HUMIDITY;
+					String value = "setEnv," + PROPER_TEMPERATURE + "," + PROPER_HUMIDITY;
+					String libValue = "connLocal," + client.name;
+					//local에 보내기
 					client.send(value);
+					//lib에 보내기
+					send(libValue);
 				}catch(Exception e) {
 					if(serverSocketChannel.isOpen()) {stopCentral();}
 					return;
@@ -77,7 +81,7 @@ public class CentralServer {
 			librarySocketChannel.configureBlocking(true);
 			librarySocketChannel.connect(new InetSocketAddress("220.66.115.136", 5001));
 			
-			String value = PROPER_TEMPERATURE + "," + PROPER_HUMIDITY;
+			String value = "setEnv," + PROPER_TEMPERATURE + "," + PROPER_HUMIDITY;
 			send(value);
 			receive();
 		}catch(Exception e) {

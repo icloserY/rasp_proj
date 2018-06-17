@@ -15,11 +15,16 @@ public class ConnectClient {
 	String name = "Local_Server ";
 	boolean aircon = false;
 	boolean heater = false;
+	boolean humidifier = false;
+	boolean dehumidifier = false;
+	CentralServer central;
 	
-	public ConnectClient(SocketChannel socketChannel, ExecutorService executorService, List<ConnectClient> connections) {
+	public ConnectClient(SocketChannel socketChannel, ExecutorService executorService, 
+							List<ConnectClient> connections, CentralServer central) {
 		this.socketChannel = socketChannel;
 		this.executorService = executorService;
 		this.connections = connections;
+		this.central = central;
 		
 		name += number++ + "번";
 		receive();
@@ -43,21 +48,44 @@ public class ConnectClient {
 					
 					System.out.print(message);
 					System.out.println(data);
-					
+					String value = "";
 					if(data.equals("OVER_TEMPERATURE")) {
 						this.aircon = true;
 						aircon(aircon);
+						value += "setRoomEnv," + name + "," + "air," + "ON";
+						central.send(value);
 					}else if(data.equals("LOW_TEMPERATURE")) {
-						this.heater = false;
+						this.heater = true;
 						aircon(heater);
+						value += "setRoomEnv," + name + "," + "heat," + "ON";
+						central.send(value);
 					}else if(data.equals("PROPER_TEMPERATURE")) {
 						this.aircon = false;
 						this.heater = false;
 						aircon(aircon);
 						heater(heater);
+						value += "setRoomEnv," + name + "," + "airheat," + "OFF";
+						central.send(value);
 					}
 					//가습기, 제습기 추가
-					
+					if(data.equals("OVER_HUMIDITY")) {
+						this.dehumidifier = true;
+						dehumidifier(dehumidifier);
+						value += "setRoomEnv," + name + "," + "dehum," + "ON";
+						central.send(value);
+					}else if(data.equals("LOW_HUMIDITY")) {
+						this.humidifier = true;
+						humidifier(humidifier);
+						value += "setRoomEnv," + name + "," + "hum," + "ON";
+						central.send(value);
+					}else if(data.equals("PROPER_HUMIDITY")) {
+						this.dehumidifier = false;
+						this.humidifier = false;
+						dehumidifier(dehumidifier);
+						humidifier(humidifier);
+						value += "setRoomEnv," + name + "," + "dehumhum," + "OFF";
+						central.send(value);
+					}
 				}catch(Exception e) {
 					connections.remove(ConnectClient.this);
 					socketChannel.close();
@@ -114,6 +142,66 @@ public class ConnectClient {
 			}
 		}else {
 			filePath = rootPath + "/" + "heaterOFF.py";
+			String[] cmd = {"python", filePath};
+			Process p;
+			try {
+				p = rt.exec(cmd);
+				p.waitFor();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	void dehumidifier(boolean dehumidifier) {
+		//에어콘 가동 or 중지
+		Runtime rt= Runtime.getRuntime();
+		String rootPath = System.getProperty("user.dir");
+		String filePath;
+		if(dehumidifier) {
+			filePath = rootPath + "/" + "dehumidifierOn.py";
+			String[] cmd = {"python", filePath};
+			Process p;
+			try {
+				p = rt.exec(cmd);
+				p.waitFor();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			filePath = rootPath + "/" + "dehumidifierOFF.py";
+			String[] cmd = {"python", filePath};
+			Process p;
+			try {
+				p = rt.exec(cmd);
+				p.waitFor();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	void humidifier(boolean humidifier) {
+		//히터 가동 or 중지
+		Runtime rt= Runtime.getRuntime();
+		String rootPath = System.getProperty("user.dir");
+		String filePath;
+		if(humidifier) {
+			filePath = rootPath + "/" + "humidifierOn.py";
+			String[] cmd = {"python", filePath};
+			Process p;
+			try {
+				p = rt.exec(cmd);
+				p.waitFor();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			filePath = rootPath + "/" + "humidifierOFF.py";
 			String[] cmd = {"python", filePath};
 			Process p;
 			try {
