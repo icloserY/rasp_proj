@@ -22,7 +22,8 @@ public class CentralServer {
 	//좌석
 	private List<SeatStatusService> seats = new ArrayList<>();
 	private ControlAirService controlAirService = new ControlAirService(seats);
-	
+	static float PROPER_TEMPERATURE = 23.0f;
+	static float PROPER_HUMIDITY = 50.0f;
 	
 	private CentralServer() {
 		seats.add(new SeatStatusService(1));
@@ -59,6 +60,10 @@ public class CentralServer {
 					
 					ConnectClient client = new ConnectClient(socketChannel, executorService, connections);
 					connections.add(client);
+					
+					String value = PROPER_TEMPERATURE + "," + PROPER_HUMIDITY;
+					client.send(value);
+					
 				}catch(Exception e) {
 					if(serverSocketChannel.isOpen()) {stopCentral();}
 					return;

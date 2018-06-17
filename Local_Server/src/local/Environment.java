@@ -21,8 +21,8 @@ public class Environment {
 	}
 	
 	
-	static final float PROPER_TEMPERATURE = 23;
-	static final float PROPER_HUMIDITY = 50;
+	static float PROPER_TEMPERATURE = 23;
+	static float PROPER_HUMIDITY = 50;
 	
 	public float getTemperature() {
 		return _temperature;

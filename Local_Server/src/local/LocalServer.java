@@ -1,7 +1,10 @@
 package local;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -37,12 +40,12 @@ public class LocalServer {
 			localSocketChannel = SocketChannel.open();
 			localSocketChannel.configureBlocking(true);
 			localSocketChannel.connect(new InetSocketAddress("220.66.115.136", 5550));
-			
 		}catch(Exception e) {
 			e.printStackTrace();
 			if(localSocketChannel.isOpen()) {stopLocal();}
 			return;
 		}
+		receive();
 		executorService.submit(environmentService = new WatchEnvironmentService(env, localSocketChannel, executorService, controller.getNotice_env(), controller.getTime_label(), controller.getTtle_label()));
 		executorService.submit(decibelService = new WatchDecibelServiceByListener(seats, controller.getNotice_db()));
 	}
@@ -61,5 +64,31 @@ public class LocalServer {
 		} catch(Exception e) {
 			System.out.println("올바르게 종료하지 못했습니다.");
 		}
+	}
+	
+	public void receive() {
+		executorService.submit(()->{
+			while(true) {
+				try {
+					ByteBuffer byteBuffer = ByteBuffer.allocate(100);
+					int readByte = localSocketChannel.read(byteBuffer);
+					if(readByte == -1) {
+						throw new IOException();
+					}
+					
+					byteBuffer.flip();
+					Charset charset = Charset.forName("UTF-8");
+					
+					String data = charset.decode(byteBuffer).toString();
+					String message = "[요청 받음 : " + localSocketChannel.getRemoteAddress() + "] ->" + "";
+					
+					System.out.print(message);
+					System.out.println(data);
+					
+				}catch(Exception e) {
+					localSocketChannel.close();
+				}
+			}
+		});
 	}
 }
