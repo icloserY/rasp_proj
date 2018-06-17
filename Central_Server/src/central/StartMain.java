@@ -47,6 +47,7 @@ public class StartMain {
 								data += "setPropTemp," + CentralServer.PROPER_TEMPERATURE;
 								System.out.println(data);
 								sendToLocal(central, data);
+								data = "";
 							} else if(command.equalsIgnoreCase("2")) {
 								System.out.println("적정습도를 입력하세요.(%)");
 								command = reader.readLine();
@@ -54,6 +55,7 @@ public class StartMain {
 								data += "setPropHum," + CentralServer.PROPER_HUMIDITY;
 								System.out.println(data);
 								sendToLocal(central, data);
+								data = "";
 							} else if(command.equalsIgnoreCase("3")){
 								System.out.println("적정온도,습도를 입력하세요.(C,%)");
 								command = reader.readLine();
@@ -63,6 +65,7 @@ public class StartMain {
 								data += "setPropTempHum," + command; 
 								System.out.println(data);
 								sendToLocal(central, data);
+								data = "";
 							} else if(command.equalsIgnoreCase("4")){
 								setFlag = false;
 							}
