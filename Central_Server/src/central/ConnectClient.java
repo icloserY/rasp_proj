@@ -126,7 +126,7 @@ public class ConnectClient {
 		}
 	}
 	
-	void send(String data) {
+	public void send(String data) {
 		executorService.submit(()->{
 			try {
 				Charset charset = Charset.forName("UTF-8");

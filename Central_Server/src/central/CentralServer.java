@@ -65,7 +65,6 @@ public class CentralServer {
 					
 					String value = PROPER_TEMPERATURE + "," + PROPER_HUMIDITY;
 					client.send(value);
-					
 				}catch(Exception e) {
 					if(serverSocketChannel.isOpen()) {stopCentral();}
 					return;
@@ -80,6 +79,7 @@ public class CentralServer {
 			
 			String value = PROPER_TEMPERATURE + "," + PROPER_HUMIDITY;
 			send(value);
+			receive();
 		}catch(Exception e) {
 			e.printStackTrace();
 			if(librarySocketChannel.isOpen()) {try {
@@ -115,6 +115,46 @@ public class CentralServer {
 			System.out.print("연결 된 connections : ");
 			System.out.println(connections.size());
 		}
+	}
+	
+	void receive() {
+		executorService.submit(()->{
+			while(true) {
+				try {
+					ByteBuffer byteBuffer = ByteBuffer.allocate(100);
+					int readByte = librarySocketChannel.read(byteBuffer);
+					if(readByte == -1) {
+						throw new IOException();
+					}
+					
+					byteBuffer.flip();
+					Charset charset = Charset.forName("UTF-8");
+					
+					String data = charset.decode(byteBuffer).toString();
+					String message = "[요청 받음 : " + librarySocketChannel.getRemoteAddress() + "] ->" + "";
+					
+					System.out.println(data);
+					String[] value = data.split(",");
+					if (value[0].equalsIgnoreCase("setEnv")) {
+						PROPER_TEMPERATURE = Float.parseFloat(value[1]);
+						PROPER_HUMIDITY = Float.parseFloat(value[2]);
+					}
+					System.out.println(PROPER_TEMPERATURE);
+					System.out.println(PROPER_HUMIDITY);
+					for (ConnectClient client : connections) {
+						client.send(data);
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+					try {
+						librarySocketChannel.close();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
 	}
 	
 	void send(String data) {

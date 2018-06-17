@@ -86,9 +86,12 @@ public class LocalServer {
 					System.out.println(data);
 					
 					String[] value = data.split(",");
-					
-					Environment.PROPER_TEMPERATURE = Float.parseFloat(value[0]);
-					Environment.PROPER_HUMIDITY = Float.parseFloat(value[1]);
+					if (value[0].equalsIgnoreCase("setEnv")) {
+						Environment.PROPER_TEMPERATURE = Float.parseFloat(value[1]);
+						Environment.PROPER_HUMIDITY = Float.parseFloat(value[2]);
+					}
+					System.out.println(Environment.PROPER_TEMPERATURE);
+					System.out.println(Environment.PROPER_HUMIDITY);
 					
 				}catch(Exception e) {
 					localSocketChannel.close();
