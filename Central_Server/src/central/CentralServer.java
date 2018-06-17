@@ -150,6 +150,7 @@ public class CentralServer {
 					}
 				}catch(Exception e) {
 					e.printStackTrace();
+					System.out.println("receive 오류");
 					try {
 						librarySocketChannel.close();
 					} catch (IOException e1) {
