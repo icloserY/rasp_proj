@@ -83,7 +83,7 @@ public class CentralServer {
 			
 			String value = "setEnv," + PROPER_TEMPERATURE + "," + PROPER_HUMIDITY;
 			send(value);
-			receive();
+			//receive();
 		}catch(Exception e) {
 			e.printStackTrace();
 			if(librarySocketChannel.isOpen()) {try {
@@ -121,7 +121,7 @@ public class CentralServer {
 		}
 	}
 	
-	void receive() {
+	void receive2() {
 		executorService.submit(()->{
 			while(true) {
 				try {
