@@ -39,7 +39,7 @@ public class LocalServer {
 		try {
 			localSocketChannel = SocketChannel.open();
 			localSocketChannel.configureBlocking(true);
-			localSocketChannel.connect(new InetSocketAddress("220.66.115.136", 5550));
+			localSocketChannel.connect(new InetSocketAddress("192.168.0.51", 5550));
 		}catch(Exception e) {
 			e.printStackTrace();
 			if(localSocketChannel.isOpen()) {stopLocal();}
