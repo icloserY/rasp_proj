@@ -88,7 +88,13 @@ public class ConnectClient {
 					}
 				}catch(Exception e) {
 					connections.remove(ConnectClient.this);
-					socketChannel.close();
+					try {
+						socketChannel.close();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					break;
 				}
 			}
 		});

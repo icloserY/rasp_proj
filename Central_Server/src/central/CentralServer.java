@@ -71,7 +71,7 @@ public class CentralServer {
 					send(libValue);
 				}catch(Exception e) {
 					if(serverSocketChannel.isOpen()) {stopCentral();}
-					return;
+					break;
 				}
 			}
 		});
@@ -156,6 +156,7 @@ public class CentralServer {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					break;
 				}
 			}
 		});
