@@ -86,7 +86,11 @@ public class LocalServer {
 					System.out.println(data);
 					
 					String[] value = data.split(",");
-					if (value[0].equalsIgnoreCase("setEnv")) {
+					if (value[0].equalsIgnoreCase("setPropTemp")) {
+						Environment.PROPER_TEMPERATURE = Float.parseFloat(value[1]);
+					} else if(value[0].equalsIgnoreCase("setPropHum")) {
+						Environment.PROPER_HUMIDITY = Float.parseFloat(value[1]);
+					} else if(value[0].equalsIgnoreCase("setPropTempHum")) {
 						Environment.PROPER_TEMPERATURE = Float.parseFloat(value[1]);
 						Environment.PROPER_HUMIDITY = Float.parseFloat(value[2]);
 					}

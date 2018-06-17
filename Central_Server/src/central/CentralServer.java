@@ -17,7 +17,6 @@ public class CentralServer {
 	private static final CentralServer central = new CentralServer();
 	//서버 소켓 채널
 	private ServerSocketChannel serverSocketChannel;
-	private SocketChannel librarySocketChannel;
 	private ExecutorService executorService;
 	//서버가 관리하는 클라이언트
 	List<ConnectClient> connections = new Vector<>(); 
@@ -63,36 +62,15 @@ public class CentralServer {
 					ConnectClient client = new ConnectClient(socketChannel, executorService, connections, central);
 					connections.add(client);
 					
-					String value = "setEnv," + PROPER_TEMPERATURE + "," + PROPER_HUMIDITY;
-					String libValue = "connLocal," + client.name;
+					String value = "setPropTempHum," + PROPER_TEMPERATURE + "," + PROPER_HUMIDITY;
 					//local에 보내기
 					client.send(value);
-					//lib에 보내기
-					send(libValue);
 				}catch(Exception e) {
 					if(serverSocketChannel.isOpen()) {stopCentral();}
 					break;
 				}
 			}
 		});
-		//libraryMm에 소켓 연결
-		try {
-			librarySocketChannel = SocketChannel.open();
-			librarySocketChannel.configureBlocking(true);
-			librarySocketChannel.connect(new InetSocketAddress("220.66.115.136", 5001));
-			
-			String value = "setEnv," + PROPER_TEMPERATURE + "," + PROPER_HUMIDITY;
-			send(value);
-			//receive();
-		}catch(Exception e) {
-			e.printStackTrace();
-			if(librarySocketChannel.isOpen()) {try {
-				librarySocketChannel.close();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-			}}
-			return;
-		}
 	}
 	
 	public void stopCentral() {
@@ -119,59 +97,5 @@ public class CentralServer {
 			System.out.print("연결 된 connections : ");
 			System.out.println(connections.size());
 		}
-	}
-	
-	void receive2() {
-		executorService.submit(()->{
-			while(true) {
-				try {
-					ByteBuffer byteBuffer = ByteBuffer.allocate(100);
-					int readByte = librarySocketChannel.read(byteBuffer);
-					if(readByte == -1) {
-						throw new IOException();
-					}
-					
-					byteBuffer.flip();
-					Charset charset = Charset.forName("UTF-8");
-					
-					String data = charset.decode(byteBuffer).toString();
-					String message = "[요청 받음 : " + librarySocketChannel.getRemoteAddress() + "] ->" + "";
-					
-					System.out.println(data);
-					String[] value = data.split(",");
-					if (value[0].equalsIgnoreCase("setEnv")) {
-						PROPER_TEMPERATURE = Float.parseFloat(value[1]);
-						PROPER_HUMIDITY = Float.parseFloat(value[2]);
-					}
-					System.out.println(PROPER_TEMPERATURE);
-					System.out.println(PROPER_HUMIDITY);
-					for (ConnectClient client : connections) {
-						client.send(data);
-					}
-				}catch(Exception e) {
-					e.printStackTrace();
-					System.out.println("receive 오류");
-					try {
-						librarySocketChannel.close();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					break;
-				}
-			}
-		});
-	}
-	
-	void send(String data) {
-		executorService.submit(()->{
-			try {
-				Charset charset = Charset.forName("UTF-8");
-				ByteBuffer byteBuffer = charset.encode(data);
-				this.librarySocketChannel.write(byteBuffer);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-		});
 	}
 }

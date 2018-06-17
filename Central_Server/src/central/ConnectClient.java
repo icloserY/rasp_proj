@@ -52,39 +52,27 @@ public class ConnectClient {
 					if(data.equals("OVER_TEMPERATURE")) {
 						this.aircon = true;
 						aircon(aircon);
-						value += "setRoomEnv," + name + "," + "air," + "ON";
-						central.send(value);
 					}else if(data.equals("LOW_TEMPERATURE")) {
 						this.heater = true;
 						aircon(heater);
-						value += "setRoomEnv," + name + "," + "heat," + "ON";
-						central.send(value);
 					}else if(data.equals("PROPER_TEMPERATURE")) {
 						this.aircon = false;
 						this.heater = false;
 						aircon(aircon);
 						heater(heater);
-						value += "setRoomEnv," + name + "," + "airheat," + "OFF";
-						central.send(value);
 					}
 					//가습기, 제습기 추가
 					if(data.equals("OVER_HUMIDITY")) {
 						this.dehumidifier = true;
 						dehumidifier(dehumidifier);
-						value += "setRoomEnv," + name + "," + "dehum," + "ON";
-						central.send(value);
 					}else if(data.equals("LOW_HUMIDITY")) {
 						this.humidifier = true;
 						humidifier(humidifier);
-						value += "setRoomEnv," + name + "," + "hum," + "ON";
-						central.send(value);
 					}else if(data.equals("PROPER_HUMIDITY")) {
 						this.dehumidifier = false;
 						this.humidifier = false;
 						dehumidifier(dehumidifier);
 						humidifier(humidifier);
-						value += "setRoomEnv," + name + "," + "dehumhum," + "OFF";
-						central.send(value);
 					}
 				}catch(Exception e) {
 					connections.remove(ConnectClient.this);
