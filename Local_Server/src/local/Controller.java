@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 
 public class Controller implements Initializable {
 	@FXML private Label notice_db;
+	@FXML private Label proper_env;
 	@FXML private Label notice_env;
 	@FXML private Label time_label;
 	@FXML private Label title_label;
@@ -21,6 +22,10 @@ public class Controller implements Initializable {
 	
 	public Label getNotice_db() {
 		return this.notice_db;
+	}
+	
+	public Label getProper_env() {
+		return this.proper_env;
 	}
 	
 	public Label getNotice_env() {

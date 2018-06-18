@@ -17,6 +17,7 @@ public class WatchEnvironmentService implements Runnable {
 	private Environment env;
 	private SocketChannel localSocketChannel;
 	private ExecutorService executorService;
+	private Label proper_env;
 	private Label notice_env;
 	private Label time_label;
 	private Label title_label;
@@ -35,10 +36,11 @@ public class WatchEnvironmentService implements Runnable {
 	float humidity = 0.0f;
 	
     public WatchEnvironmentService(Environment env, SocketChannel localSocketChannel,
-    								ExecutorService executorService, Label notice_env, Label time_label, Label title_label) {
+    								ExecutorService executorService, Label proper_env, Label notice_env, Label time_label, Label title_label) {
 		this.env = env;
 		this.localSocketChannel = localSocketChannel;
 		this.executorService = executorService;
+		this.proper_env = proper_env;
 		this.notice_env = notice_env;
 		this.time_label = time_label;
 		this.title_label = title_label;
@@ -70,8 +72,11 @@ public class WatchEnvironmentService implements Runnable {
 								str_time = dayTime.format (time);
 								time_label.setText(str_time);
 								
-								notice_env.setText("온도 : " + Float.toString(env.getTemperature()) + " ºC      " 
-													+ "  습도 : " + Float.toString(env.getHumidity()) + " %");
+								proper_env.setText("적정 온도 : " + Float.toString(Environment.PROPER_TEMPERATURE) + " ºC      " 
+										+ "  적정 습도 : " + Float.toString(Environment.PROPER_HUMIDITY) + " %");
+								
+								notice_env.setText("현재 온도 : " + Float.toString(env.getTemperature()) + " ºC      " 
+													+ "  현재 습도 : " + Float.toString(env.getHumidity()) + " %");
 								
 								if (title_flag) {
 								title_label.setText("연암 도서관은 쾌적환 환경을 지향합니다.");
