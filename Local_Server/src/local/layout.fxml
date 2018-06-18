@@ -26,7 +26,7 @@
 				<Font size="20.0" />
 			</font>
 		</Label>
-		<Label fx:id="title_label" alignment="CENTER" prefWidth="750" prefHeight="200" text="도서관 환경 관리 시스템">
+		<Label fx:id="title_label" alignment="CENTER" prefWidth="750" prefHeight="150" text="도서관 환경 관리 시스템">
 			<font>
 				<Font size="28.0" />
 			</font>
